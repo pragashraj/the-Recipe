@@ -35,7 +35,7 @@ const styles=StyleSheet.create({
     },
 
     input:{
-       borderBottomWidth:0.2,
+       borderBottomWidth:0.3,
        fontSize:18
     },
 

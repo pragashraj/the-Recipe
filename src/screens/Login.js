@@ -118,19 +118,20 @@ const styles=StyleSheet.create({
         height:140,
         alignItems:'center',
         justifyContent:'center',
+        
     },
 
     logo:{
         width:'40%',
-        height:'60%',
+        height:'80%',
     },
 
     inputBlock:{
         width:'100%',
-        height:300,
+        height:250,
         alignItems:'center',
         justifyContent:'center',
-        marginTop:'5%'
+        marginTop:'3%', 
     },
 
     emailBlock:{
@@ -151,7 +152,7 @@ const styles=StyleSheet.create({
     forgotText:{
         color:'#5ada58',
         fontWeight:'bold',
-        fontSize:17
+        fontSize:16
     },
 
     loginBtn:{
@@ -208,6 +209,7 @@ const styles=StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         bottom: 0,
+        position:'relative'
     },
 
     que:{
