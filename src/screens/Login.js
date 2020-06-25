@@ -2,23 +2,35 @@ import React, { Component } from 'react'
 import { Text, View ,StyleSheet ,Image , ScrollView ,TouchableOpacity } from 'react-native'
 
 import InputField from '../components/InputField'
+import CustomButton from '../components/CustomButton'
 
 class Login extends Component {
     state={
         email:'',
-        password:''
+        password:'',
     }
 
-    onEmailText=(e)=>{
-        this.setState({
-            email:e
-        })
+    onTextChange=(e,placeholder)=>{
+        switch(placeholder){
+            case "E-mail":
+                this.setState({
+                    email:e
+                })
+                break
+
+            case "Password":
+                this.setState({
+                    password:e
+                })
+                break
+
+            default : return
+        }
+
     }
 
-    onPasswordText=(e)=>{
-        this.setState({
-            password:e
-        })
+    handleBtnClick=()=>{
+        
     }
 
     render() {
@@ -32,7 +44,7 @@ class Login extends Component {
                     <View style={styles.emailBlock}>
                         <InputField 
                             placeholder="E-mail" 
-                            onTextChange={this.onEmailText} 
+                            onTextChange={this.onTextChange} 
                             defaultValue={this.state.email}
                             textSecure={false}
                         />
@@ -41,7 +53,7 @@ class Login extends Component {
                     <View style={styles.passwordBlock}>
                         <InputField 
                             placeholder="Password" 
-                            onTextChange={this.onPasswordText} 
+                            onTextChange={this.onTextChange} 
                             defaultValue={this.state.password}
                             textSecure={true}
                         />
@@ -52,10 +64,41 @@ class Login extends Component {
                             <Text style={styles.forgotText}>Forgot Password ?</Text>
                         </TouchableOpacity>
                     </View>
+
+                    <View style={styles.loginBtn}>
+                        <CustomButton btnText="Login" handleBtnClick={this.handleBtnClick}/>
+                    </View>
                     
                 </View>
 
-                <View style={styles.signUpLinkBlock}></View>
+                <View style={styles.signUpLinkBlock}>
+                    <View style={styles.signWith}>
+                        <Text style={styles.signWithText}>sign in with</Text>
+                    </View>
+
+                    <View style={styles.signWithContents}>
+
+                        <TouchableOpacity>
+                            <View style={{...styles.contents,marginLeft:'20%'}}>
+                                <Image source={require('../assets/img/fb.png')} style={styles.conImg}/>
+                            </View>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity>
+                            <View style={styles.contents}>
+                                <Image source={require('../assets/img/mail.png')} style={styles.conImg}/>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={styles.signUpLink}>
+                        <Text style={styles.que}>Don't have an account ?</Text>
+                        <TouchableOpacity style={styles.Link}>
+                            <Text style={styles.Link}>Sign up</Text>
+                        </TouchableOpacity>
+                    </View> 
+
+                </View>
             </ScrollView>
         )
     }
@@ -87,7 +130,7 @@ const styles=StyleSheet.create({
         height:300,
         alignItems:'center',
         justifyContent:'center',
-        // backgroundColor:'green'
+        marginTop:'5%'
     },
 
     emailBlock:{
@@ -111,11 +154,71 @@ const styles=StyleSheet.create({
         fontSize:17
     },
 
+    loginBtn:{
+        width:'80%',
+        height:50,
+        marginTop:'10%'
+    },
+
     signUpLinkBlock:{
         width:'100%',
         height:'20%',
-        // backgroundColor:'violet'
     },
+
+    signWith:{
+        justifyContent:'center',
+        alignItems:'center',
+        marginTop:'8%',
+    },
+
+    signWithText:{
+        fontSize:18,
+        opacity:0.7
+    },
+
+    signWithContents:{
+        width:'100%',
+        height:70,
+        alignItems:'center',
+        justifyContent:'center',
+        flexDirection:'row',
+        marginTop:'2%'
+    },
+
+    contents:{
+        backgroundColor:'white',
+        width:50,
+        height:50,
+        borderRadius:25,
+        marginHorizontal:'5%',
+        alignItems:'center',
+        justifyContent:'center',
+        elevation:6,
+    },
+
+    conImg:{
+        width:'80%',
+        height:'80%'
+    },
+
+    signUpLink:{
+        width:'100%',
+        height:50,
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center',
+        bottom: 0,
+    },
+
+    que:{
+        opacity:0.7
+    },
+
+    Link:{
+        marginLeft:'1%',
+        fontWeight:'bold',
+        color:'#5ada58',
+    }
 
 })
 

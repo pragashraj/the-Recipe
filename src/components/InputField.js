@@ -14,7 +14,7 @@ const InputField = ({placeholder,onTextChange,defaultValue,textSecure}) => {
                 placeholder={placeholder}
                 autoCapitalize='none'
                 autoCorrect={false}
-                onChangeText={onTextChange}
+                onChangeText={e=>onTextChange(e,placeholder)}
                 defaultValue={defaultValue}
                 secureTextEntry={textSecure}
             />
