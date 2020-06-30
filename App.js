@@ -10,7 +10,7 @@ import Home from './src/screens/Home'
 const App = () => {
   return (
     <View>
-      <Home/>
+      <Location/>
     </View>
   )
 }

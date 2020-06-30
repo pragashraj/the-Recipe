@@ -4,6 +4,8 @@ import { Text, StyleSheet, View , Image} from 'react-native'
 import InputField from '../components/InputField'
 import CustomButton from '../components/CustomButton'
 
+import MapView ,{PROVIDER_GOOGLE,Marker}from 'react-native-maps';
+
 class Location extends Component {
 
     state={
@@ -33,36 +35,69 @@ class Location extends Component {
 
     }
 
+
+    renderInputFieldView=()=>{
+        return(
+            <View style={styles.inputForm}>
+                <View style={styles.input}>
+                    <InputField 
+                        placeholder="Enter City" 
+                        onTextChange={this.onTextChange} 
+                        defaultValue={this.state.city}
+                        textSecure={false}
+                    />
+                </View>
+
+                <View style={styles.input}>
+                    <InputField 
+                        placeholder="Enter Area" 
+                        onTextChange={this.onTextChange} 
+                        defaultValue={this.state.area}
+                        textSecure={false}
+                    />
+                </View>
+
+                <View style={styles.continueBtn}>
+                    <CustomButton btnText="Continue" handleBtnClick={this.handleBtnClick}/>
+                </View>
+
+            </View>
+        )
+    }
+
+    renderMapView=()=>{
+        return(
+            <MapView
+                provider={PROVIDER_GOOGLE}
+                region={{
+                    latitude: 37.72825,
+                    longitude: -122.4324,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                }}
+                style={styles.mapView}
+            >
+
+                <Marker
+                    coordinate={{
+                        latitude: 37.72825,
+                        longitude: -122.4324,
+                    }}
+                >
+                </Marker>
+            </MapView>
+        )
+    }
+
     render() {
         return (
             <View style={styles.container}>
-               <View style={styles.mapView}>
-                    <Image source={require('../assets/img/map.jpg')} />
-               </View>
-               <View style={styles.inputForm}>
-                    <View style={styles.input}>
-                        <InputField 
-                            placeholder="Enter City" 
-                            onTextChange={this.onTextChange} 
-                            defaultValue={this.state.city}
-                            textSecure={false}
-                        />
-                    </View>
-
-                    <View style={styles.input}>
-                        <InputField 
-                            placeholder="Enter Area" 
-                            onTextChange={this.onTextChange} 
-                            defaultValue={this.state.area}
-                            textSecure={false}
-                        />
-                    </View>
-
-                    <View style={styles.continueBtn}>
-                        <CustomButton btnText="Continue" handleBtnClick={this.handleBtnClick}/>
-                    </View>
-
-               </View>
+               {
+                   this.renderMapView()
+               }
+               {
+                   this.renderInputFieldView()
+               }
             </View>
         )
     }
@@ -72,7 +107,8 @@ const styles = StyleSheet.create({
     container:{
         backgroundColor:'white',
         width:'100%',
-        height:'100%'
+        height:'100%',
+        
     },
 
     mapView:{
