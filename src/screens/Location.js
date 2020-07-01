@@ -1,16 +1,36 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View , Image} from 'react-native'
+import { Text, StyleSheet, View , Platform, Alert} from 'react-native'
 
 import InputField from '../components/InputField'
 import CustomButton from '../components/CustomButton'
 
-import MapView ,{PROVIDER_GOOGLE,Marker}from 'react-native-maps';
+import MapView ,{PROVIDER_GOOGLE,Marker,Callout}from 'react-native-maps';
+import Geolocation from '@react-native-community/geolocation';
+import {request , PERMISSIONS} from 'react-native-permissions'
+
+import axios from 'axios'
 
 class Location extends Component {
 
     state={
         city:'',
-        area:''
+        area:'',
+        initialRegion:{
+            latitude: 37.78825,
+            longitude: -122.4324,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+        }
+    }
+
+    componentDidMount(){
+        this.requestPermissions()
+        // const API_KEY="08b99a7e0e12220737573be14114740b";
+        // const API_ID="b32179fc"
+        // const url='https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=Museum%20of%20Contemporary%20Art%20Australia&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=08b99a7e0e12220737573be14114740b'
+        // axios.get(url).then(res=>{
+        //      console.warn(res)
+        // })
     }
 
     onTextChange=(e,placeholder)=>{
@@ -33,6 +53,33 @@ class Location extends Component {
 
     handleBtnClick=()=>{
 
+    }
+
+
+    requestPermissions= async()=>{
+        if(Platform.OS==='android'){
+             var response =await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION)
+             if(response==='granted'){
+                this.locateCurrentPosition()
+             }
+        }
+    }
+
+
+    locateCurrentPosition=()=>{
+        Geolocation.getCurrentPosition(
+            pos=>{
+                let initialRegion={
+                    latitude: pos.coords.latitude,
+                    longitude: pos.coords.longitude,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                }
+                this.setState({initialRegion})
+            },
+            err=> Alert.alert(err.message),
+            {enableHighAccuracy:true,timeout:10000, maximumAge:1000}
+        )
     }
 
 
@@ -69,21 +116,21 @@ class Location extends Component {
         return(
             <MapView
                 provider={PROVIDER_GOOGLE}
-                region={{
-                    latitude: 37.72825,
-                    longitude: -122.4324,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                }}
+                ref={map=>this._map=map}
+                region={this.state.initialRegion}
+                showsUserLocation={true}
                 style={styles.mapView}
             >
 
                 <Marker
                     coordinate={{
-                        latitude: 37.72825,
-                        longitude: -122.4324,
+                        latitude:this.state.initialRegion.latitude,
+                        longitude: this.state.initialRegion.longitude,
                     }}
                 >
+                    <Callout>
+                        <Text>Your Current Location</Text>
+                    </Callout>
                 </Marker>
             </MapView>
         )
@@ -102,6 +149,8 @@ class Location extends Component {
         )
     }
 }
+
+
 
 const styles = StyleSheet.create({
     container:{
