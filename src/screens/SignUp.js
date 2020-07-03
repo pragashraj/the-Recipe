@@ -4,6 +4,9 @@ import { Text, View ,StyleSheet ,Image , ScrollView ,TouchableOpacity } from 're
 import InputField from '../components/InputField'
 import CustomButton from '../components/CustomButton'
 
+import {connect} from 'react-redux'
+import {setCurrentAuth} from '../redux/Actions/SetAuth'
+
 class SignUp extends Component {
 
     state={
@@ -139,4 +142,12 @@ const styles=StyleSheet.create({
 
 })
 
-export default SignUp
+
+const mapDispatchToProps=dispatch=>{
+    return{
+        setCurrentAuth:user=>dispatch(setCurrentAuth(user))
+    }
+}
+
+
+export default connect(null,mapDispatchToProps)(SignUp)

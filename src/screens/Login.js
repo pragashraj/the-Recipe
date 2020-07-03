@@ -4,6 +4,10 @@ import { Text, View ,StyleSheet ,Image , ScrollView ,TouchableOpacity } from 're
 import InputField from '../components/InputField'
 import CustomButton from '../components/CustomButton'
 
+
+import {connect} from 'react-redux'
+import {setCurrentAuth} from '../redux/Actions/SetAuth'
+
 class Login extends Component {
     state={
         email:'',
@@ -26,11 +30,11 @@ class Login extends Component {
 
             default : return
         }
-
     }
 
     handleBtnClick=()=>{
-        
+        const {email,password}=this.state
+        this.props.setCurrentAuth({email,password})
     }
 
     render() {
@@ -93,7 +97,7 @@ class Login extends Component {
 
                     <View style={styles.signUpLink}>
                         <Text style={styles.que}>Don't have an account ?</Text>
-                        <TouchableOpacity style={styles.Link}>
+                        <TouchableOpacity style={styles.Link} onPress={()=>console.warn(this.props.data)}>
                             <Text style={styles.Link}>Sign up</Text>
                         </TouchableOpacity>
                     </View> 
@@ -225,4 +229,18 @@ const styles=StyleSheet.create({
 })
 
 
-export default Login
+const mapStateToProps=({auth:{user},data:{data}})=>{
+    return{
+       user,
+       data
+    }
+}
+
+
+const mapDispatchToProps=dispatch=>{
+    return{
+        setCurrentAuth:user=>dispatch(setCurrentAuth(user))
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Login)

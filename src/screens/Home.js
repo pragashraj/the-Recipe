@@ -5,6 +5,8 @@ import { Text, StyleSheet, View ,Image ,FlatList , Dimensions , TouchableOpacity
 import {coffee,pizza} from '../api/Api'
 import RecipePoster from '../components/RecipePoster'
 
+import {connect} from 'react-redux'
+
 class Home extends Component {
     state={
         data:'',
@@ -14,6 +16,7 @@ class Home extends Component {
 
     componentDidMount(){
         this.fetchData()
+        console.warn(this.props.user)
     }
 
     fetchData=async ()=>{
@@ -67,7 +70,7 @@ class Home extends Component {
         return(
             <FlatList
                 data={data}
-                keyExtractor={()=>Math.random()}
+                keyExtractor={()=>Math.random().toString()}
                 renderItem={
                     ({item,index})=>this.renderFlatListItem(item,ref,index)
                 }
@@ -201,4 +204,11 @@ const styles = StyleSheet.create({
 })
 
 
-export default Home
+const mapStateToProps=({auth:{user}})=>{
+    return{
+       user
+    }
+}
+
+
+export default connect(mapStateToProps)(Home)
