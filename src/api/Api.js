@@ -15,3 +15,10 @@ export const coffee=axios.create({
 export const pizza=axios.create({
     baseURL:`https://api.edamam.com/search?q=pizza&app_id=${API_ID}&app_key=${API_KEY}`,
 })
+
+
+export const foodAPI=(type)=>(
+    axios.create({
+        baseURL:`https://api.edamam.com/search?q=${type}&app_id=${API_ID}&app_key=${API_KEY}`,
+    })
+)

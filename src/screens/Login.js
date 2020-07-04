@@ -8,10 +8,13 @@ import CustomButton from '../components/CustomButton'
 import {connect} from 'react-redux'
 import {setCurrentAuth} from '../redux/Actions/SetAuth'
 
+import {auth} from '../config/config'
+
 class Login extends Component {
     state={
         email:'',
         password:'',
+        errorMsg:''
     }
 
     onTextChange=(e,placeholder)=>{
@@ -34,7 +37,21 @@ class Login extends Component {
 
     handleBtnClick=()=>{
         const {email,password}=this.state
-        this.props.setCurrentAuth({email,password})
+        if(email.length >0 && password.length>0){
+
+            auth.signInWithEmailAndPassword(email,password).then(user=>{
+                this.props.setCurrentAuth(user)
+                this.setState({
+                    email:'',
+                    password:'',
+                    errorMsg:''
+                })
+
+            }).catch((err)=> this.setState({errorMsg:err}))
+        }else{
+          this.setState({errorMsg:"Invalid Inputs"})
+        }
+        
     }
 
     render() {

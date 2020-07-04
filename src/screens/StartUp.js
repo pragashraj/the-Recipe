@@ -1,23 +1,61 @@
-import React from 'react'
+import React,{Component} from 'react'
 import { View, StyleSheet ,Image , Animated, Text} from 'react-native'
 
-const StartUp = () => {
-    return (
-        <View style={styles.container}>
-            <View style={styles.blocks}>
-                      
-                <View style={styles.logoBlock}>
-                    <Image source={require("../assets/img/logo.png")} style={styles.logo}/>
-                </View>
-                
-                <View style={styles.logoTitleBlock}>
-                     <Image source={require("../assets/img/logoTitle.png")} style={styles.Title}/>
-                </View>
-            </View>
-        </View>
-    )
-}
+class ImageLoader extends Component {
+    state = {
+      opacity: new Animated.Value(0),
+    }
 
+    onLoad = () => {
+      Animated.timing(this.state.opacity, {
+        toValue: 1,
+        duration: 3500,
+        useNativeDriver: true,
+      }).start();
+    }
+  
+    render() {
+      return (
+        <Animated.Image
+          onLoad={this.onLoad}
+          {...this.props}
+          style={[
+            {
+              opacity: this.state.opacity,
+              transform: [
+                {
+                  scale: this.state.opacity.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0.85, 1],
+                  })
+                },
+              ],
+            },
+            this.props.style,
+          ]}
+        />
+      );
+    }
+  }
+  
+  const StartUp = () => (
+    <View style={styles.container}>
+        <View style={styles.blocks}>
+                        
+            <View style={styles.logoBlock}>
+                <ImageLoader
+                    style={styles.logo}
+                    source={require("../assets/img/logo.png")}
+                />
+            </View>
+                    
+             <View style={styles.logoTitleBlock}>
+                <Image source={require("../assets/img/logoTitle.png")} style={styles.Title}/>
+             </View>
+
+        </View>
+    </View>
+  );
 
 const styles=StyleSheet.create({
 
@@ -57,5 +95,6 @@ const styles=StyleSheet.create({
 
 
 })
+
 
  export default StartUp

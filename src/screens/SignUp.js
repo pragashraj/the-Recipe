@@ -7,12 +7,15 @@ import CustomButton from '../components/CustomButton'
 import {connect} from 'react-redux'
 import {setCurrentAuth} from '../redux/Actions/SetAuth'
 
+import {auth} from '../config/config'
+
 class SignUp extends Component {
 
     state={
         email:'',
         password:'',
-        confirmPassword:''
+        confirmPassword:'',
+        errorMsg:''
     }
 
     onTextChange=(e,placeholder)=>{
@@ -41,7 +44,26 @@ class SignUp extends Component {
     }
 
     handleBtnClick=()=>{
-        
+        const {email,password,confirmPassword}=this.state
+
+        if(email.length >0 && password.length>0 && confirmPassword.length >0){
+
+            if(password===confirmPassword){
+                auth.createUserWithEmailAndPassword(email,password).then(user=>{
+                    this.props.setCurrentAuth(user)
+                    this.setState({
+                        email:'',
+                        password:'',
+                        confirmPassword:'',
+                        errorMsg:''
+                    })
+                }).catch(err=>this.setState({errorMsg:err}))
+            }else{
+                this.setState({errorMsg:'Passwords Not Matched'})
+            }
+           
+        }
+
     }
 
     render() {
@@ -79,6 +101,16 @@ class SignUp extends Component {
                             textSecure={true}
                         />
                     </View>
+
+                
+                    {
+                        this.state.errorMsg ? (
+                            <View style={styles.errMsgBlock}>
+                                <Text style={styles.errMsgText}>{this.state.errorMsg}</Text> 
+                            </View>
+                        ): null
+                    }
+                    
 
                     <View style={styles.loginBtn}>
                         <CustomButton btnText="Sign Up" handleBtnClick={this.handleBtnClick}/>
@@ -132,6 +164,18 @@ const styles=StyleSheet.create({
     passwordBlock:{
         width:'80%',
         height:'20%'
+    },
+
+    errMsgBlock:{
+        width:'100%',
+        height:50,
+        alignItems:'center',
+        justifyContent:'center',
+    },
+
+    errMsgText:{
+        fontSize:17,
+        color:'red'
     },
 
     loginBtn:{
