@@ -51,7 +51,9 @@ class Login extends Component {
         }else{
           this.setState({errorMsg:"Invalid Inputs"})
         }
-        
+
+        // console.warn(this.props)
+        // this.props.navigation.navigate('signUp')
     }
 
     render() {

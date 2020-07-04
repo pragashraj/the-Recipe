@@ -7,12 +7,15 @@ import FlatListItem from '../components/FlatListItem'
 import {connect} from 'react-redux'
 import {storeData} from '../redux/Actions/StoreData'
 
+import axios from 'axios'
+
 class Home extends Component {
     state={
         data:'',
         itemSortList:["All","Pizza","Chinese","Italian","Soup","Hamburger","SeaFood"],
-        preInheritFoods:["Pizza","Chinese","Italian","Soup","Hamburger","SeaFood","cake"],
-        pzData:null
+        preInheritFoods:["pizza","chinese","italian","soup","Hamburger","seaFood","cake"],
+        pzData:null,
+        foodData:[],
     }
 
     componentDidMount(){
@@ -20,17 +23,13 @@ class Home extends Component {
     }
 
     fetchData=async ()=>{
-        const preInheritFoods=this.state.preInheritFoods
-        preInheritFoods.map(item=>{
-
-        })
-        coffee.get().then(res=>{
+        await coffee.get().then(res=>{
             this.setState({
                 data:res.data.hits
             })
         })
 
-        foodAPI("pizza").get().then(res=>{
+        foodAPI("Pizza").get().then(res=>{
             this.setState({
                 pzData:res.data.hits
             })

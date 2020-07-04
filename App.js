@@ -11,11 +11,43 @@ import SignUp from './src/screens/SignUp'
 import Location from './src/screens/Location'
 import Home from './src/screens/Home'
 
+import {createStackNavigator} from '@react-navigation/stack'
+import {NavigationContainer} from '@react-navigation/native'
+
+const stack=createStackNavigator()
+
 const App = () => {
   return (
-    <View>
-      <Home/>
-    </View>
+    <NavigationContainer>
+        <stack.Navigator>
+            <stack.Screen
+              name="home"
+              component={Home}
+              options={ { headerShown:false } }
+            />
+            <stack.Screen
+              name="startup"
+              component={StartUp}
+              options={ { headerShown:false } }
+            />
+            <stack.Screen
+              name="login"
+              component={Login}
+              options={ { headerShown:false } }
+            />
+            <stack.Screen
+              name="signUp"
+              component={SignUp}
+              options={ { headerShown:false } }
+            />
+            <stack.Screen
+              name="location"
+              component={Location}
+              options={ { headerShown:false } }
+            />
+           
+          </stack.Navigator>
+    </NavigationContainer>
   )
 }
 
