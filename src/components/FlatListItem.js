@@ -3,13 +3,14 @@ import { StyleSheet, Text, View ,TouchableOpacity,FlatList} from 'react-native'
 
 import RecipePoster from './RecipePoster'
 
-const FlatListItem = ({data,title}) => {
+const FlatListItem = ({data,title,handleTabOnList}) => {
 
-    const renderFlatListItem=(item)=>{
+    const renderFlatListItem=(item,index)=>{
         return(
+            index === 0 ? null : index === 1 ? null :
             <View style={styles.img}>
-                <TouchableOpacity>
-                    <RecipePoster uri={item.recipe.image}/>
+                <TouchableOpacity onPress={()=>handleTabOnList(item)}>
+                    <RecipePoster uri={item.image}  label={item.label}/>
                 </TouchableOpacity>
             </View>
         )
@@ -22,7 +23,7 @@ const FlatListItem = ({data,title}) => {
                 data={data}
                 keyExtractor={()=>Math.random().toString()}
                 renderItem={
-                    ({item})=>renderFlatListItem(item)
+                    ({item,index})=>renderFlatListItem(item.recipe,index)
                 }
                 horizontal
                 showsHorizontalScrollIndicator={false}

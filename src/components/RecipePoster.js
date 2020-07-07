@@ -3,12 +3,12 @@ import { StyleSheet, Text, View ,Image } from 'react-native'
 
 import RecipeInfoCard from '../components/RecipeInfoCard'
 
-const RecipePoster = ({uri}) => {
+const RecipePoster = ({uri,label}) => {
     return (
         <View style={styles.container}>
             <Image source={{uri:uri}} style={styles.img}/>
             <View style={styles.card}>
-                <RecipeInfoCard title="Pizza Hut" name="American (Traditional) Pizza"/>
+                <RecipeInfoCard title={label}/>
             </View>
         </View>
     )

@@ -10,6 +10,7 @@ import Login from './src/screens/Login'
 import SignUp from './src/screens/SignUp'
 import Location from './src/screens/Location'
 import Home from './src/screens/Home'
+import ItemDetail from './src/screens/ItemDetail'
 
 import {createStackNavigator} from '@react-navigation/stack'
 import {NavigationContainer} from '@react-navigation/native'
@@ -44,6 +45,11 @@ const App = () => {
               name="location"
               component={Location}
               options={ { headerShown:false } }
+            />
+            <stack.Screen
+              name="itemDetail"
+              component={ItemDetail}
+              options={ {headerShown:false} }
             />
            
           </stack.Navigator>

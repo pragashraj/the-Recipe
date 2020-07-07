@@ -7,15 +7,13 @@ import FlatListItem from '../components/FlatListItem'
 import {connect} from 'react-redux'
 import {storeData} from '../redux/Actions/StoreData'
 
-import axios from 'axios'
 
 class Home extends Component {
     state={
-        data:'',
         itemSortList:["All","Pizza","Chinese","Italian","Soup","Hamburger","SeaFood"],
-        preInheritFoods:["pizza","chinese","italian","soup","Hamburger","seaFood","cake"],
-        pzData:null,
-        foodData:[],
+        todayData:'',
+        continentalData:null,
+        allData:[]
     }
 
     componentDidMount(){
@@ -25,16 +23,17 @@ class Home extends Component {
     fetchData=async ()=>{
         await coffee.get().then(res=>{
             this.setState({
-                data:res.data.hits
+                todayData:res.data.hits
             })
         })
 
-        foodAPI("Pizza").get().then(res=>{
+        await foodAPI("pizza").get().then(res=>{
             this.setState({
-                pzData:res.data.hits
+                continentalData:res.data.hits
             })
         })
     }
+    
 
     renderFlatListItem=(item,index)=>{
         return(
@@ -62,6 +61,10 @@ class Home extends Component {
         )
     }
 
+    handleTabOnList=(e)=>{
+        this.props.navigation.navigate('itemDetail',{item:e})
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -72,15 +75,23 @@ class Home extends Component {
                 </View>
 
                 <View style={styles.todayList}>
-                   <FlatListItem data={this.state.data} title="Today's best deals"/>
+                   <FlatListItem data={this.state.todayData} title="Today's best deals" handleTabOnList={this.handleTabOnList}/>
                 </View>
 
                 <View style={styles.continental}>
-                    <FlatListItem data={this.state.pzData} title="Continental"/>
+                    <FlatListItem data={this.state.continentalData} title="Country Specials" handleTabOnList={this.handleTabOnList}/>
                 </View>
                 
-                <View style={styles.restaurants}></View>
-                
+                <View style={styles.restaurants}>
+                    <View style={styles.restaurantsTextBlock}>
+                        <TouchableOpacity >
+                            <Text style={styles.restaurantsText}>Restaurants</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.restaurantsImgBlock}>
+                        <Image source={require('../assets/img/restaurant.png')}/>
+                    </View>
+                </View>
             </View>
         )
     }
@@ -91,7 +102,8 @@ const styles = StyleSheet.create({
 
     container:{
         width:'100%',
-        height:'100%'
+        height:'100%',
+        backgroundColor:'white'
     },
 
     themeImg:{
@@ -133,7 +145,20 @@ const styles = StyleSheet.create({
     restaurants:{
         width:'100%',
         height:'10%',
-        backgroundColor:'silver',
+        justifyContent:'center',
+        alignItems:'center',
+        flexDirection:'row',
+    },
+
+    restaurantsTextBlock:{
+        width:'80%'
+    },
+
+    restaurantsText:{
+        fontSize:18,
+        color:'green',
+        marginLeft:'5%',
+        alignSelf:'flex-start'
     },
 })
 

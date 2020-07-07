@@ -1,16 +1,12 @@
 import React from 'react'
 import { StyleSheet, Text, View ,Image} from 'react-native'
 
-const RecipeInfoCard = ({title,name}) => {
+const RecipeInfoCard = ({title}) => {
     return (
         <View style={styles.container}>
             <View style={styles.card}>
                 <View style={styles.lvl01Info}>
                     <Text style={styles.info01}>{title}</Text>
-                </View>
-
-                <View style={styles.lvl02Info}>
-                    <Text style={styles.info02}>{name}</Text>
                 </View>
 
                 <View style={styles.lvl03Info}>
@@ -49,7 +45,7 @@ const styles = StyleSheet.create({
 
     lvl01Info:{
         width:'93%',
-        height:'40%',
+        height:'50%',
         justifyContent:'center',
         marginLeft:'7%'
     },
@@ -59,22 +55,9 @@ const styles = StyleSheet.create({
         fontWeight:'bold',
     },
 
-    lvl02Info:{
-        width:'93%',
-        height:'12%',
-        marginLeft:'7%',
-        justifyContent:'center',
-        borderBottomWidth:0.2
-    },
-
-    info02:{
-        fontSize:11,
-        opacity:0.7,
-    },
-
     lvl03Info:{
         width:'100%',
-        height:'48%',
+        height:'50%',
         flexDirection:'row',
     },
 
