@@ -11,6 +11,7 @@ import SignUp from './src/screens/SignUp'
 import Location from './src/screens/Location'
 import Home from './src/screens/Home'
 import ItemDetail from './src/screens/ItemDetail'
+import FoodList from './src/screens/FoodList'
 
 import {createStackNavigator} from '@react-navigation/stack'
 import {NavigationContainer} from '@react-navigation/native'
@@ -51,6 +52,12 @@ const App = () => {
               component={ItemDetail}
               options={ {headerShown:false} }
             />
+            <stack.Screen
+              name="foodList"
+              component={FoodList}
+              options={ {headerShown:false} }
+            />
+
            
           </stack.Navigator>
     </NavigationContainer>

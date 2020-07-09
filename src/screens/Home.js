@@ -66,6 +66,19 @@ class Home extends Component {
         this.props.navigation.navigate('itemDetail',{item:e})
     }
 
+    handleTabOnTitle=(e)=>{
+        switch(e){
+            case "Today's best deals":
+                this.props.navigation.navigate('foodList',{id:1})
+                break
+            
+            case "Country Specials":
+                break
+
+            default :return
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -80,11 +93,21 @@ class Home extends Component {
                 </View>
 
                 <View style={styles.todayList}>
-                   <FlatListItem data={this.state.todayData} title="Today's best deals" handleTabOnList={this.handleTabOnList}/>
+                   <FlatListItem 
+                        data={this.state.todayData} 
+                        title="Today's best deals" 
+                        handleTabOnList={this.handleTabOnList}
+                        handleTabOnTitle={this.handleTabOnTitle}
+                    />
                 </View>
 
                 <View style={styles.continental}>
-                    <FlatListItem data={this.state.continentalData} title="Country Specials" handleTabOnList={this.handleTabOnList}/>
+                    <FlatListItem 
+                        data={this.state.continentalData} 
+                        title="Country Specials" 
+                        handleTabOnList={this.handleTabOnList}
+                        handleTabOnTitle={this.handleTabOnTitle}
+                    />
                 </View>
                 
                 <View style={styles.restaurants}>
