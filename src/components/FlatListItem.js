@@ -34,7 +34,9 @@ const FlatListItem = ({data,title,handleTabOnList}) => {
     return (
         <View style={styles.container}>
             <View style={styles.ListTitleView}>
-                <Text style={styles.ListTitle}>{title}</Text>
+                <TouchableOpacity>
+                    <Text style={styles.ListTitle}>{title}</Text>
+                </TouchableOpacity>
             </View>
             <View style={styles.ListComponent}>
                 {

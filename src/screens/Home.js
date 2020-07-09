@@ -7,13 +7,14 @@ import FlatListItem from '../components/FlatListItem'
 import {connect} from 'react-redux'
 import {storeData} from '../redux/Actions/StoreData'
 
+import CustomSearch from '../components/CustomSearch'
+
 
 class Home extends Component {
     state={
         itemSortList:["All","Pizza","Chinese","Italian","Soup","Hamburger","SeaFood"],
         todayData:'',
         continentalData:null,
-        allData:[]
     }
 
     componentDidMount(){
@@ -70,6 +71,10 @@ class Home extends Component {
             <View style={styles.container}>
                 <Image source={require('../assets/img/theme.png')} style={styles.themeImg}/>
 
+                <View style={styles.searchView}>
+                    <CustomSearch/>
+                </View>
+
                 <View style={styles.shortList}>
                     {this.renderFlatList(this.state.itemSortList)}
                 </View>
@@ -97,7 +102,7 @@ class Home extends Component {
     }
 }
 
-
+var screenHight=Dimensions.get('screen').height
 const styles = StyleSheet.create({
 
     container:{
@@ -109,12 +114,20 @@ const styles = StyleSheet.create({
     themeImg:{
         position:'absolute',
         width:'100%',
-        height:Dimensions.get('screen').height/4.5
+        height:screenHight/4.5
+    },
+
+    searchView:{
+        position:'absolute',
+        width:'60%',
+        height:screenHight/14,
+        marginTop:'8%',
+        marginLeft:'30%'
     },
 
     shortList:{
         width:'100%',
-        height:'5%',
+        height:(screenHight/100)*5,
         marginTop:'40%',
         justifyContent:'center',
         alignItems:'center'
@@ -134,17 +147,17 @@ const styles = StyleSheet.create({
 
     todayList:{
         width:'100%',
-        height:'30%',
+        height:(screenHight/100)*28,
     },
 
     continental:{
         width:'100%',
-        height:'30%',
+        height:(screenHight/100)*28,
     },
 
     restaurants:{
         width:'100%',
-        height:'10%',
+        height:(screenHight/100)*5,
         justifyContent:'center',
         alignItems:'center',
         flexDirection:'row',
