@@ -4,27 +4,31 @@ import { StyleSheet, Text, View,Image ,Dimensions,TouchableOpacity,FlatList} fro
 import {foodAPI} from '../api/Api'
 import RecipeInfoCard from '../components/RecipeInfoCard'
 
+import Spinner from '../components/Spinner'
+
 const FoodList = (props) => {
     const [data,setData]=useState(null)
-    const id=props.route.params
+    const [loading,setLoading]=useState(true)
+    const params=props.route.params
 
     useEffect(()=>{
 
         foodAPI("pizza").get().then(res=>{
             setData(res.data.hits)
+            setLoading(false)
         })
 
     },[])
 
-    const handleTabOnList=()=>{
-
+    const handleTabOnList=(item)=>{
+        params.nav.navigate('itemDetail',{item})
     }
 
 
     const renderFlatListItem=(item,index)=>{
         return(
             index === 0 ? null : index === 1 ? null :
-            <TouchableOpacity onPress={handleTabOnList}>
+            <TouchableOpacity onPress={()=>handleTabOnList(item)}>
                 <View style={styles.img}>
                     <View style={styles.itemImgBlock}>
                         <Image source={{uri:item.image}} style={styles.itemImg}/>
@@ -34,7 +38,9 @@ const FoodList = (props) => {
                          <RecipeInfoCard  title={item.label}/>
                     </View>
 
-                    <View style={styles.itemPrizeBlock}></View>
+                    <View style={styles.itemPrizeBlock}>
+                        <Text style={styles.price}>$450</Text>
+                    </View>
                 </View>
             </TouchableOpacity>
         )
@@ -56,8 +62,13 @@ const FoodList = (props) => {
     return (
         <View style={styles.container}>
             <Image source={require('../assets/img/theme.png')} style={styles.themeImg}/>
+            <View style={styles.titleBlock}>
+                <Text style={styles.title}>{params.title}</Text>
+            </View>
             <View style={styles.listView}>
-                {renderFlatList()}
+                {
+                    loading ? <Spinner size='large'/>:renderFlatList()               
+                }
             </View>
         </View>
     )
@@ -79,9 +90,24 @@ const styles = StyleSheet.create({
         height:Dimensions.get('screen').height/4.5
     },
 
+    titleBlock:{
+        width:'100%',
+        height:'5%',
+        position:'absolute',
+        marginTop:'12%',
+        justifyContent:'center',
+        alignItems:'center'
+    },
+
+    title:{
+        fontSize:23,
+        color:'white',
+        fontWeight:'bold',
+        marginLeft:'5%'
+    },
+
     listView:{
         width:'100%',
-        // height:'70%',
         marginTop:'40%'
     },
 
@@ -89,7 +115,6 @@ const styles = StyleSheet.create({
         width:'90%',
         height:80,
         marginLeft:'5%',
-        backgroundColor:'yellow',
         marginTop:'3%',
         flexDirection:'row'
     },
@@ -97,28 +122,34 @@ const styles = StyleSheet.create({
     itemImgBlock:{
         width:'30%',
         height:'100%',
-        backgroundColor:'pink',
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
     },
 
     itemInfoBlock:{
         width:'50%',
         height:'100%',
-        backgroundColor:'green',
         padding:5
     },
 
     itemPrizeBlock:{
         width:'20%',
         height:'100%',
-        backgroundColor:'pink'
+        justifyContent:'center',
+        alignItems:'center',
     },
 
     itemImg:{
         width:'90%',
         height:'90%',
+        borderRadius:10,
+    },
+
+    price:{
+        fontSize:17,
+        fontWeight:'bold'
     }
+
 })
 
 export default FoodList

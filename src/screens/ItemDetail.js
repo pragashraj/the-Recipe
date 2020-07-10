@@ -51,7 +51,7 @@ class ItemDetail extends Component {
                         <RecipeInfoCard title={item.label}/>
 
                         <View style={styles.prizeBlock}>
-                            <Text style={{...styles.price,marginLeft:'8%'}}>$50</Text>
+                            <Text style={{...styles.price,marginLeft:'8%'}}>$450</Text>
                         </View>
                         
                     </View>
@@ -71,7 +71,7 @@ class ItemDetail extends Component {
                         </TouchableOpacity>
 
                         <View>
-                            <Text style={styles.price}>${this.state.quantity*50}</Text>
+                            <Text style={styles.price}>${this.state.quantity*450}</Text>
                         </View>
                     </View>
 

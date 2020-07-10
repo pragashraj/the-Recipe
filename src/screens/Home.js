@@ -67,16 +67,7 @@ class Home extends Component {
     }
 
     handleTabOnTitle=(e)=>{
-        switch(e){
-            case "Today's best deals":
-                this.props.navigation.navigate('foodList',{id:1})
-                break
-            
-            case "Country Specials":
-                break
-
-            default :return
-        }
+        this.props.navigation.navigate('foodList',{title:e,nav:this.props.navigation})
     }
 
     render() {
