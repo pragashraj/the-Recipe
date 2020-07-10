@@ -8,7 +8,7 @@ import {connect} from 'react-redux'
 import {storeData} from '../redux/Actions/StoreData'
 
 import CustomSearch from '../components/CustomSearch'
-
+import ShortList from '../components/ShortList'
 
 class Home extends Component {
     state={
@@ -36,38 +36,16 @@ class Home extends Component {
     }
     
 
-    renderFlatListItem=(item,index)=>{
-        return(
-            <View style={styles.shortListItemView}>
-                <TouchableOpacity>
-                    <Text style={
-                        index === 0 ? {...styles.shortListItem, color:'green'} : {...styles.shortListItem}                         
-                    }>{item}</Text>
-                </TouchableOpacity>
-            </View>
-        )
+    handleShortListTab=(item)=>{
+        this.props.navigation.navigate('foodList',{item,nav:this.props.navigation})
     }
 
-    renderFlatList=(data)=>{
-        return(
-            <FlatList
-                data={data}
-                keyExtractor={()=>Math.random().toString()}
-                renderItem={
-                    ({item,index})=>this.renderFlatListItem(item,index)
-                }
-                horizontal
-                showsHorizontalScrollIndicator={false}
-            />
-        )
+    handleTabOnList=(item)=>{
+        this.props.navigation.navigate('itemDetail',{item})
     }
 
-    handleTabOnList=(e)=>{
-        this.props.navigation.navigate('itemDetail',{item:e})
-    }
-
-    handleTabOnTitle=(e)=>{
-        this.props.navigation.navigate('foodList',{title:e,nav:this.props.navigation})
+    handleTabOnTitle=(item)=>{
+        this.props.navigation.navigate('foodList',{item,nav:this.props.navigation})
     }
 
     render() {
@@ -80,7 +58,7 @@ class Home extends Component {
                 </View>
 
                 <View style={styles.shortList}>
-                    {this.renderFlatList(this.state.itemSortList)}
+                    <ShortList data={this.state.itemSortList} handleShortListTab={this.handleShortListTab}/>
                 </View>
 
                 <View style={styles.todayList}>
@@ -145,18 +123,6 @@ const styles = StyleSheet.create({
         marginTop:'40%',
         justifyContent:'center',
         alignItems:'center'
-    },
-
-    shortListItemView:{
-        justifyContent:'center',
-        alignItems:'center'
-    },
-
-    shortListItem:{
-        fontSize:16,
-        marginRight:5,
-        marginLeft:10,
-        opacity:0.5
     },
 
     todayList:{

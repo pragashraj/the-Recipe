@@ -13,7 +13,7 @@ const FoodList = (props) => {
 
     useEffect(()=>{
 
-        foodAPI("pizza").get().then(res=>{
+        foodAPI(params.item).get().then(res=>{
             setData(res.data.hits)
             setLoading(false)
         })
@@ -63,7 +63,7 @@ const FoodList = (props) => {
         <View style={styles.container}>
             <Image source={require('../assets/img/theme.png')} style={styles.themeImg}/>
             <View style={styles.titleBlock}>
-                <Text style={styles.title}>{params.title}</Text>
+                <Text style={styles.title}>{params.item}</Text>
             </View>
             <View style={styles.listView}>
                 {
