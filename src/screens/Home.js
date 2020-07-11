@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View ,Image ,FlatList , Dimensions , TouchableOpacity} from 'react-native'
+import { Text, StyleSheet, View ,Image , Dimensions , TouchableOpacity} from 'react-native'
 
 import {coffee,foodAPI} from '../api/Api'
 import FlatListItem from '../components/FlatListItem'
@@ -42,6 +42,7 @@ class Home extends Component {
 
     handleTabOnList=(item)=>{
         this.props.navigation.navigate('itemDetail',{item})
+        console.warn(item)
     }
 
     handleTabOnTitle=(item)=>{
@@ -54,7 +55,7 @@ class Home extends Component {
                 <Image source={require('../assets/img/theme.png')} style={styles.themeImg}/>
 
                 <View style={styles.searchView}>
-                    <CustomSearch/>
+                    <CustomSearch nav={this.props.navigation}/>
                 </View>
 
                 <View style={styles.shortList}>

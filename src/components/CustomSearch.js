@@ -1,17 +1,24 @@
 import React,{useState} from 'react'
-import { StyleSheet, View ,TextInput,Image,TouchableOpacity } from 'react-native'
+import { StyleSheet, View ,TextInput,Image,TouchableOpacity,Text } from 'react-native'
 
 import {foodAPI} from '../api/Api'
+import Spinner from './Spinner'
 
-const CustomSearch = () => {
+const CustomSearch = ({nav}) => {
     const [input,setInput]=useState('')
+    const [loading,setLoading]=useState(false)
 
     const handleInputChanges=(e)=>{
         setInput(e)
     }
+
     const handleSearchTab=()=>{
        if(input.length>0){
-           console.warn(input)
+            setLoading(true)
+            foodAPI(input).get().then(res=>{
+                nav.navigate('itemDetail',{item:res.data.hits[0].recipe})
+                setLoading(false) 
+            }).catch(err=>{console.warn(err)})
        }
     }
 
@@ -24,11 +31,15 @@ const CustomSearch = () => {
                 onChangeText={e=>handleInputChanges(e)}
                 defaultValue={input}
             />
-            <View style={styles.imgBlock}>
-                <TouchableOpacity onPress={handleSearchTab}>
-                    <Image source={require('../assets/img/search.png')} style={styles.img}/>
-                </TouchableOpacity>
-            </View>
+            {
+                loading ? <Spinner size='large'/> :
+
+                <View style={styles.imgBlock}>
+                    <TouchableOpacity onPress={handleSearchTab}>
+                        <Image source={require('../assets/img/search.png')} style={styles.img}/>
+                    </TouchableOpacity>
+                </View>
+        }
         </View>
     )
 }
