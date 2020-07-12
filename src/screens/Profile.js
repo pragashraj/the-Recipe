@@ -9,8 +9,56 @@ class Profile extends Component {
             {title:"Log out",img:require('../assets/img/logout.png'),id:'3'},
         ],
 
+        accCart:false,
+        settCart:false,
+        logCart:false,
     }
 
+    renderHiddenCart=(item)=>{
+        switch(item){
+            case "My Account":
+                if(this.state.accCart){
+                    return(
+                        <View style={styles.hiddenCart}>
+
+                        </View>
+                    )
+                }else{return null}
+
+            case "Settings":
+                if(this.state.settCart){
+                    return(
+                        <View style={styles.hiddenCart}>
+
+                        </View>
+                    )
+                }else{return null}
+
+            default : return
+        }
+    }
+
+    setAction=(item)=>{
+        switch(item){
+            case "My Account":
+                this.setState({accCart:!this.state.accCart})
+                break;
+        
+            case "Settings":
+                this.setState({settCart:!this.state.settCart})
+                break;
+
+            case "Log out":
+                this.logOut()
+                break;
+
+            default : return null
+        }
+    }
+
+    logOut=()=>{
+        this.props.navigation.navigate('login')
+    }
 
     renderList=()=>{
         return(
@@ -21,7 +69,7 @@ class Profile extends Component {
                     ({item})=>{
                         return(
                             <View>
-                                <TouchableOpacity style={styles.topics}>
+                                <TouchableOpacity style={styles.topics} onPress={()=>this.setAction(item.title)}>
                                     <View style={{...styles.topicImg,...styles.center}}>
                                         <Image source={item.img}/>
                                     </View>
@@ -29,6 +77,7 @@ class Profile extends Component {
                                         <Text style={styles.title}>{item.title}</Text>
                                     </View>
                                 </TouchableOpacity>
+                                {this.renderHiddenCart(item.title) }
                              </View>   
                         )
                     }
@@ -44,6 +93,8 @@ class Profile extends Component {
 
                 <View style={styles.header}>
                     <Image source={require('../assets/img/theme.png')} style={styles.themeImg}/>
+                    <Image source={require('../assets/img/acc.png')} style={styles.backImg}/>
+
                     <View style={styles.headerBlock}>
                         <View style={{...styles.infoBlock}}>
                             <Text style={styles.name}>Gorge Nelson</Text>
@@ -80,6 +131,13 @@ const styles = StyleSheet.create({
         position:'absolute',
         width:'100%',
         height:'100%'
+    },
+
+    backImg:{
+        position:'absolute',
+        width:400,
+        height:450,
+        marginTop:'70%',
     },
 
     header:{
@@ -146,9 +204,10 @@ const styles = StyleSheet.create({
         width:'96%',
         marginLeft:'2%',
         marginTop:'10%',
-        backgroundColor:'white',
+        backgroundColor:'#5ada58',
         borderBottomWidth:0.3,
         flexDirection:'row',
+        elevation:5
     },
 
     topicImg:{
@@ -161,7 +220,16 @@ const styles = StyleSheet.create({
     },
 
     title:{
-        fontSize:18
+        fontSize:18,
+        color:'white',
+        fontWeight:'bold'
+    },
+
+    hiddenCart:{
+        width:'100%',
+        height:250,
+        backgroundColor:'white',
+        elevation:3
     },
     
 })

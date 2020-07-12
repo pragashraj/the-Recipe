@@ -4,16 +4,17 @@ import { View, StyleSheet ,Image , Animated, Text} from 'react-native'
 class ImageLoader extends Component {
     state = {
       opacity: new Animated.Value(0),
+      nav:false
     }
 
     onLoad = () => {
       Animated.timing(this.state.opacity, {
         toValue: 1,
-        duration: 3500,
+        duration: 4000,
         useNativeDriver: true,
       }).start();
     }
-  
+
     render() {
       return (
         <Animated.Image
@@ -34,6 +35,7 @@ class ImageLoader extends Component {
             this.props.style,
           ]}
         />
+
       );
     }
   }
@@ -65,7 +67,6 @@ const styles=StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
         backgroundColor:'#5ada58',
-        // backgroundColor:'#d70f64'
     },
 
     logoBlock:{

@@ -25,13 +25,8 @@ const App = () => {
     <NavigationContainer>
         <stack.Navigator>
             <stack.Screen
-              name="profile"
-              component={Profile}
-              options={ { headerShown:false } }
-            />
-            <stack.Screen
-              name="basket_payment"
-              component={Basket_Payment}
+              name="startup"
+              component={StartUp}
               options={ { headerShown:false } }
             />
             <stack.Screen
@@ -39,11 +34,7 @@ const App = () => {
               component={Home}
               options={ { headerShown:false } }
             />
-            <stack.Screen
-              name="startup"
-              component={StartUp}
-              options={ { headerShown:false } }
-            />
+          
             <stack.Screen
               name="login"
               component={Login}
@@ -70,6 +61,16 @@ const App = () => {
               options={ {headerShown:false} }
             />
 
+            <stack.Screen
+              name="profile"
+              component={Profile}
+              options={ { headerShown:false } }
+            />
+            <stack.Screen
+              name="basket_payment"
+              component={Basket_Payment}
+              options={ { headerShown:false } }
+            />
            
           </stack.Navigator>
     </NavigationContainer>

@@ -49,10 +49,18 @@ class Home extends Component {
         this.props.navigation.navigate('foodList',{item,nav:this.props.navigation})
     }
 
+    handleTabOnPro=()=>{
+        this.props.navigation.navigate('profile')
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <Image source={require('../assets/img/theme.png')} style={styles.themeImg}/>
+                <TouchableOpacity style={styles.ProfileImg} onPress={this.handleTabOnPro}>
+                    <Image source={require('../assets/img/account.png')}/>
+                </TouchableOpacity>
+                
 
                 <View style={styles.searchView}>
                     <CustomSearch nav={this.props.navigation}/>
@@ -108,6 +116,14 @@ const styles = StyleSheet.create({
         position:'absolute',
         width:'100%',
         height:screenHight/4.5
+    },
+
+    ProfileImg:{
+        position:'absolute',
+        alignSelf:'flex-end',
+        marginTop:'2%',
+        marginRight:'5%',
+        opacity:0.5
     },
 
     searchView:{

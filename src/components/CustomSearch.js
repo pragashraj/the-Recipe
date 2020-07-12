@@ -36,7 +36,7 @@ const CustomSearch = ({nav}) => {
 
                 <View style={styles.imgBlock}>
                     <TouchableOpacity onPress={handleSearchTab}>
-                        <Image source={require('../assets/img/search.png')} style={styles.img}/>
+                        <Image source={require('../assets/img/search.png')}/>
                     </TouchableOpacity>
                 </View>
         }
@@ -63,8 +63,7 @@ const styles = StyleSheet.create({
 
     imgBlock:{
         width:'20%',
-        justifyContent:'center',
-        alignItems:'center'
+        justifyContent:'flex-end',
     },
 
 })
