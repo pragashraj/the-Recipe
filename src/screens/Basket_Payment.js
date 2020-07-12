@@ -65,7 +65,7 @@ const Basket_Payment = () => {
         <View style={styles.container}>
             <Image source={require('../assets/img/theme.png')} style={styles.themeImg}/>
             <Image source={require('../assets/img/billingCard.jpg')} style={styles.cardImg}/>
-            <Text style={styles.heading}>Delivery Options</Text>
+            <Text style={styles.heading}>Delivery & Payment</Text>
 
             <View style={styles.basketItems}>
                 {renderFlatList()}
@@ -116,9 +116,9 @@ const styles = StyleSheet.create({
 
     heading:{
         position:'absolute',
-        fontSize:22,
+        fontSize:25,
         color:'white',
-        marginLeft:'32%',
+        marginLeft:'28%',
         marginTop:'12%',
         fontWeight:'bold'
     },

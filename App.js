@@ -13,6 +13,7 @@ import Home from './src/screens/Home'
 import ItemDetail from './src/screens/ItemDetail'
 import FoodList from './src/screens/FoodList'
 import Basket_Payment from './src/screens/Basket_Payment'
+import Profile from './src/screens/Profile'
 
 import {createStackNavigator} from '@react-navigation/stack'
 import {NavigationContainer} from '@react-navigation/native'
@@ -23,6 +24,11 @@ const App = () => {
   return (
     <NavigationContainer>
         <stack.Navigator>
+            <stack.Screen
+              name="profile"
+              component={Profile}
+              options={ { headerShown:false } }
+            />
             <stack.Screen
               name="basket_payment"
               component={Basket_Payment}
