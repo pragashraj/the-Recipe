@@ -42,7 +42,6 @@ class Home extends Component {
 
     handleTabOnList=(item)=>{
         this.props.navigation.navigate('itemDetail',{item})
-        console.warn(item)
     }
 
     handleTabOnTitle=(item)=>{
@@ -144,12 +143,13 @@ const styles = StyleSheet.create({
 
     todayList:{
         width:'100%',
-        height:(screenHight/100)*28,
+        height:(screenHight/100)*23,
     },
 
     continental:{
         width:'100%',
-        height:(screenHight/100)*28,
+        height:(screenHight/100)*23,
+        marginTop:'3%'
     },
 
     restaurants:{
@@ -158,10 +158,13 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         flexDirection:'row',
+        marginTop:'5%',
+        
     },
 
     restaurantsTextBlock:{
-        width:'80%'
+        width:'80%',
+        marginLeft:'3%'
     },
 
     restaurantsText:{

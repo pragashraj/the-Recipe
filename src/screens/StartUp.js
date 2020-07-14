@@ -1,5 +1,7 @@
 import React,{Component} from 'react'
-import { View, StyleSheet ,Image , Animated, Text} from 'react-native'
+import { View, StyleSheet ,Image , Animated, Text ,TouchableOpacity} from 'react-native'
+
+import CustomButton from '../components/CustomButton'
 
 class ImageLoader extends Component {
     state = {
@@ -40,7 +42,11 @@ class ImageLoader extends Component {
     }
   }
   
-  const StartUp = () => (
+  const handleNav=(props)=>{
+    props.navigation.navigate('mainFlow')
+  }
+
+  const StartUp = (props) => (
     <View style={styles.container}>
         <View style={styles.blocks}>
                         
@@ -53,6 +59,12 @@ class ImageLoader extends Component {
                     
              <View style={styles.logoTitleBlock}>
                 <Image source={require("../assets/img/logoTitle.png")} style={styles.Title}/>
+             </View>
+
+             <View style={styles.addToBasketBtn}>
+                  <TouchableOpacity onPress={()=>handleNav(props)}>
+                      <Text style={{fontSize:24,color:'white',fontWeight:'bold'}}>Go</Text>
+                  </TouchableOpacity>
              </View>
 
         </View>
@@ -94,6 +106,12 @@ const styles=StyleSheet.create({
         height:'50%'
     },
 
+    addToBasketBtn:{
+      width:'100%',
+      height:'10%',
+      alignItems:'center',
+      justifyContent:'center',
+  }
 
 })
 

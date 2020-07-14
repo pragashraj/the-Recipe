@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
         position:'absolute', 
         width:'100%',
         height:'70%',
-        marginTop:'50%'
+        marginTop:'40%'
     },
 
     heading:{
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
 
     basketItems:{
         width:'100%',
-        marginTop:'40%',
+        marginTop:'27%',
         height:(screenHight/100)*28
     },
 
