@@ -43,7 +43,7 @@ class ImageLoader extends Component {
   }
   
   const handleNav=(props)=>{
-    props.navigation.navigate('mainFlow')
+    props.navigation.navigate('login')
   }
 
   const StartUp = (props) => (

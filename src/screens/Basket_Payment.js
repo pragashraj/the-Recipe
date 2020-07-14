@@ -130,8 +130,8 @@ const styles = StyleSheet.create({
     },
 
     card:{
-        width:'80%',
-        marginLeft:'10%',
+        width:'90%',
+        marginLeft:'5%',
         marginTop:'2%',
         marginBottom:'1%',
         elevation:6,
@@ -162,8 +162,8 @@ const styles = StyleSheet.create({
     },
 
     paymentBlock:{
-        width:'80%',
-        marginLeft:'10%',
+        width:'90%',
+        marginLeft:'5%',
         height:(screenHight/100)*26,
         marginTop:'4%',
         backgroundColor:'white',

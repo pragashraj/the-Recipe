@@ -8,7 +8,7 @@ import MapView ,{PROVIDER_GOOGLE,Marker,Callout}from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import {request , PERMISSIONS} from 'react-native-permissions'
 
-import axios from 'axios'
+import Spinner from '../components/Spinner'
 
 class Location extends Component {
 
@@ -20,7 +20,8 @@ class Location extends Component {
             longitude: -122.4324,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
-        }
+        },
+        loading:true
     }
 
     componentDidMount(){
@@ -52,7 +53,13 @@ class Location extends Component {
     }
 
     handleBtnClick=()=>{
-
+        const {city,area}=this.state
+        if(city.length>0 && area.length>0){
+            //store data in firebase
+            this.props.navigation.navigate('mainFlow')
+        }else{
+            console.warn("invalid")
+        }
     }
 
 
@@ -75,7 +82,7 @@ class Location extends Component {
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                 }
-                this.setState({initialRegion})
+                this.setState({initialRegion,loading:false})
             },
             err=> Alert.alert(err.message),
             {enableHighAccuracy:true,timeout:10000, maximumAge:1000}
@@ -140,9 +147,11 @@ class Location extends Component {
         return (
             <View style={styles.container}>
                {
+                   this.state.loading ? <Spinner size="large"/>:
                    this.renderMapView()
                }
                {
+                    this.state.loading ? null:
                    this.renderInputFieldView()
                }
             </View>
@@ -168,7 +177,7 @@ const styles = StyleSheet.create({
 
     inputForm:{
         width:'100%',
-        height:'40%',
+        height:'35%',
         backgroundColor:'#5ada58',
         borderTopLeftRadius:50,
         borderTopRightRadius:50,

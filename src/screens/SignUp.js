@@ -22,7 +22,7 @@ class SignUp extends Component {
         switch(placeholder){
             case "E-mail":
                 this.setState({
-                    email:e
+                    email:e,
                 })
                 break
 
@@ -57,13 +57,17 @@ class SignUp extends Component {
                         confirmPassword:'',
                         errorMsg:''
                     })
+                    this.handleNavigation('location')
                 }).catch(err=>this.setState({errorMsg:err}))
+
             }else{
                 this.setState({errorMsg:'Passwords Not Matched'})
-            }
-           
+            }  
         }
+    }
 
+    handleNavigation=(link)=>{
+        this.props.navigation.navigate(link)
     }
 
     render() {

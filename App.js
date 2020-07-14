@@ -62,9 +62,10 @@ const mainFlow=()=>{
           component={Home}
           options={{
             tabBarIcon: () => {
-              return <Image source={home} style={{height:50}}/>
+              return <Image source={home}/>
             },
-            title:""
+            
+            title:"home",
           }}
       />
       <bottomTab.Screen
@@ -74,7 +75,7 @@ const mainFlow=()=>{
             tabBarIcon: () => {
               return <Image source={basket} />
             },
-            title:""
+            title:"basket"
           }}
       />
       <bottomTab.Screen
@@ -84,7 +85,7 @@ const mainFlow=()=>{
             tabBarIcon: () => {
               return <Image source={profile} />
             },
-            title:""
+            title:"profile"
           }}
       />
     </bottomTab.Navigator>

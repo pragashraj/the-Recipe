@@ -17,6 +17,13 @@ class Login extends Component {
         errorMsg:''
     }
 
+    componentDidMount(){
+        const user=this.props.user
+        if(user.user){
+            this.handleNavigation('mainFlow')
+        }
+    }
+
     onTextChange=(e,placeholder)=>{
         switch(placeholder){
             case "E-mail":
@@ -46,14 +53,16 @@ class Login extends Component {
                     password:'',
                     errorMsg:''
                 })
-
+            this.handleNavigation('mainFlow')
             }).catch((err)=> this.setState({errorMsg:err}))
+
         }else{
           this.setState({errorMsg:"Invalid Inputs"})
         }
+    }
 
-        // console.warn(this.props)
-        // this.props.navigation.navigate('signUp')
+    handleNavigation=(link)=>{
+        this.props.navigation.navigate(link)
     }
 
     render() {
@@ -116,7 +125,7 @@ class Login extends Component {
 
                     <View style={styles.signUpLink}>
                         <Text style={styles.que}>Don't have an account ?</Text>
-                        <TouchableOpacity style={styles.Link} onPress={()=>console.warn(this.props.data)}>
+                        <TouchableOpacity style={styles.Link} onPress={()=>this.handleNavigation('signUp')}>
                             <Text style={styles.Link}>Sign up</Text>
                         </TouchableOpacity>
                     </View> 
@@ -248,10 +257,9 @@ const styles=StyleSheet.create({
 })
 
 
-const mapStateToProps=({auth:{user},data:{data}})=>{
+const mapStateToProps=({auth:{user}})=>{
     return{
        user,
-       data
     }
 }
 
