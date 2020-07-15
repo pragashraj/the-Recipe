@@ -57,18 +57,18 @@ class Location extends Component {
     }
 
     handleBtnClick=()=>{
-        const {city,area}=this.state
-        const uid=this.props.user.user.uid
-        const username=this.props.route.params.username
+        // const {city,area}=this.state
+        // const uid=this.props.user.user.uid
+        // const username=this.props.route.params.username
 
-        if(city.length>0 && area.length>0){
-            database.ref(`Users/${uid}`).set({uid,username,location:{city,area}}).then(()=>{
-                this.props.navigation.navigate('mainFlow')
-            })         
-        }else{
-            console.warn("invalid")
-        }
-        // this.props.navigation.navigate('mainFlow')
+        // if(city.length>0 && area.length>0){
+        //     database.ref(`Users/${uid}`).set({uid,username,location:{city,area}}).then(()=>{
+        //         this.props.navigation.navigate('mainFlow')
+        //     })         
+        // }else{
+        //     console.warn("invalid")
+        // }
+        this.props.navigation.navigate('mainFlow')
     }
 
 

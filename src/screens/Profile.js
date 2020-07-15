@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import { Text, StyleSheet, View ,Dimensions,Image,FlatList ,TouchableOpacity} from 'react-native'
 
+import {connect} from 'react-redux'
+
+import {fbase,database} from '../config/config'
+
 class Profile extends Component {
     state={
         links:[
@@ -12,6 +16,26 @@ class Profile extends Component {
         accCart:false,
         settCart:false,
         logCart:false,
+        profileData:{
+            location:{area:"",city:""},
+            uid:"",
+            username:"Kamal"
+        },
+    }
+
+
+    componentDidMount(){
+        // database.ref()
+        const uid=fbase.auth().currentUser.uid
+        var data
+        database.ref('Users').child(uid).on('value',function(snapshot){
+            const exist=(snapshot.val()!==null)
+            if(exist) data=snapshot.val()
+        })
+        
+        this.setState({
+            profileData:data
+        })
     }
 
     renderHiddenCart=(item)=>{
@@ -41,11 +65,11 @@ class Profile extends Component {
     setAction=(item)=>{
         switch(item){
             case "My Account":
-                this.setState({accCart:!this.state.accCart})
+                this.setState({accCart:!this.state.accCart,settCart:false})
                 break;
         
             case "Settings":
-                this.setState({settCart:!this.state.settCart})
+                this.setState({settCart:!this.state.settCart,accCart:false})
                 break;
 
             case "Log out":
@@ -57,7 +81,7 @@ class Profile extends Component {
     }
 
     logOut=()=>{
-        this.props.navigation.navigate('login')
+        // this.props.navigation.navigate('login')
     }
 
     renderList=()=>{
@@ -97,13 +121,13 @@ class Profile extends Component {
 
                     <View style={styles.headerBlock}>
                         <View style={{...styles.infoBlock}}>
-                            <Text style={styles.name}>Gorge Nelson</Text>
-                            <Text style={styles.address}>Seastreet,Negombo</Text>
+                            <Text style={styles.name}>{this.state.profileData.username.toUpperCase()}</Text>
+                            <Text style={styles.address}>{this.state.profileData.location.area}</Text>
                         </View>
 
                         <View style={{...styles.imgBlock,...styles.center}}>
                             <View style={{...styles.circularView,...styles.center}}>
-                                <Text style={styles.nameTag}>G</Text>
+                                <Text style={styles.nameTag}>{this.state.profileData.username.slice(0,1).toUpperCase()}</Text>
                             </View>
                         </View>
                     </View>
@@ -168,7 +192,7 @@ const styles = StyleSheet.create({
     },
 
     address:{
-        fontSize:11,
+        fontSize:13,
         color:'white'
     },
 
@@ -233,6 +257,7 @@ const styles = StyleSheet.create({
     },
     
 })
+
 
 
 export default Profile

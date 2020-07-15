@@ -10,11 +10,15 @@ import {storeData} from '../redux/Actions/StoreData'
 import CustomSearch from '../components/CustomSearch'
 import ShortList from '../components/ShortList'
 
+import Spinner from '../components/Spinner'
+
 class Home extends Component {
     state={
         itemSortList:["All","Pizza","Chinese","Italian","Soup","Hamburger","SeaFood"],
         todayData:'',
         continentalData:null,
+        loadingMeals:true,
+        loadingCountries:true
     }
 
     componentDidMount(){
@@ -24,13 +28,15 @@ class Home extends Component {
     fetchData=async ()=>{
         await coffee.get().then(res=>{
             this.setState({
-                todayData:res.data.hits
+                todayData:res.data.hits,
+                loadingMeals:false
             })
         })
 
         await foodAPI("pizza").get().then(res=>{
             this.setState({
-                continentalData:res.data.hits
+                continentalData:res.data.hits,
+                loadingCountries:false
             })
         })
     }
@@ -62,21 +68,29 @@ class Home extends Component {
                 </View>
 
                 <View style={styles.todayList}>
-                   <FlatListItem 
-                        data={this.state.todayData} 
-                        title="Today's best deals" 
-                        handleTabOnList={this.handleTabOnList}
-                        handleTabOnTitle={this.handleTabOnTitle}
-                    />
+                    {
+                        this.state.loadingMeals ? <Spinner size="large"/> :
+                   
+                        <FlatListItem 
+                                data={this.state.todayData} 
+                                title="Today's best deals" 
+                                handleTabOnList={this.handleTabOnList}
+                                handleTabOnTitle={this.handleTabOnTitle}
+                        />
+                    }
                 </View>
 
                 <View style={styles.continental}>
+                {
+                    this.state.loadingCountries ? <Spinner size="large"/> :
+
                     <FlatListItem 
                         data={this.state.continentalData} 
                         title="Country Specials" 
                         handleTabOnList={this.handleTabOnList}
                         handleTabOnTitle={this.handleTabOnTitle}
                     />
+                }
                 </View>
                 
                 <View style={styles.restaurants}>
