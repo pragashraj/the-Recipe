@@ -22,6 +22,7 @@ class Login extends Component {
         if(user.user){
             this.handleNavigation('mainFlow')
         }
+        console.warn(user)
     }
 
     onTextChange=(e,placeholder)=>{

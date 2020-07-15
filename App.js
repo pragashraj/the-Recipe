@@ -97,6 +97,11 @@ const App = () => {
     <NavigationContainer>
         <stack.Navigator>
 
+              <stack.Screen
+              name="location"
+              component={Location}
+              options={ { headerShown:false } }
+            />
             <stack.Screen
             name="authFlow"
             component={authFlow}

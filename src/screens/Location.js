@@ -8,13 +8,17 @@ import MapView ,{PROVIDER_GOOGLE,Marker,Callout}from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import {request , PERMISSIONS} from 'react-native-permissions'
 
+import {connect} from 'react-redux'
+
 import Spinner from '../components/Spinner'
+
+import {database} from '../config/config'
 
 class Location extends Component {
 
     state={
         city:'',
-        area:'',
+        address:'',
         initialRegion:{
             latitude: 37.78825,
             longitude: -122.4324,
@@ -42,9 +46,9 @@ class Location extends Component {
                 })
                 break
 
-            case "Enter Area":
+            case "Enter Address":
                 this.setState({
-                    area:e
+                    address:e
                 })
                 break
 
@@ -54,12 +58,17 @@ class Location extends Component {
 
     handleBtnClick=()=>{
         const {city,area}=this.state
+        const uid=this.props.user.user.uid
+        const username=this.props.route.params.username
+
         if(city.length>0 && area.length>0){
-            //store data in firebase
-            this.props.navigation.navigate('mainFlow')
+            database.ref(`Users/${uid}`).set({uid,username,location:{city,area}}).then(()=>{
+                this.props.navigation.navigate('mainFlow')
+            })         
         }else{
             console.warn("invalid")
         }
+        // this.props.navigation.navigate('mainFlow')
     }
 
 
@@ -104,9 +113,9 @@ class Location extends Component {
 
                 <View style={styles.input}>
                     <InputField 
-                        placeholder="Enter Area" 
+                        placeholder="Enter Address" 
                         onTextChange={this.onTextChange} 
-                        defaultValue={this.state.area}
+                        defaultValue={this.state.address}
                         textSecure={false}
                     />
                 </View>
@@ -191,7 +200,7 @@ const styles = StyleSheet.create({
 
     input:{
         width:'80%',
-        height:40,
+        height:50,
         backgroundColor:'white',
         elevation:2,
         borderRadius:5,
@@ -208,4 +217,10 @@ const styles = StyleSheet.create({
 
 })
 
-export default Location
+const mapStateToProps=({auth:{user}})=>{
+    return{
+       user,
+    }
+}
+
+export default connect(mapStateToProps)(Location)

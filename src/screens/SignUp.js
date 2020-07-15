@@ -8,6 +8,7 @@ import {connect} from 'react-redux'
 import {setCurrentAuth} from '../redux/Actions/SetAuth'
 
 import {auth} from '../config/config'
+import Spinner from '../components/Spinner'
 
 class SignUp extends Component {
 
@@ -15,7 +16,8 @@ class SignUp extends Component {
         email:'',
         password:'',
         confirmPassword:'',
-        errorMsg:''
+        errorMsg:'',
+        loading:false
     }
 
     onTextChange=(e,placeholder)=>{
@@ -45,6 +47,9 @@ class SignUp extends Component {
 
     handleBtnClick=()=>{
         const {email,password,confirmPassword}=this.state
+        var username=email.split('@')[0]
+
+        this.setState({loading:true})
 
         if(email.length >0 && password.length>0 && confirmPassword.length >0){
 
@@ -55,19 +60,16 @@ class SignUp extends Component {
                         email:'',
                         password:'',
                         confirmPassword:'',
-                        errorMsg:''
+                        errorMsg:'',
+                        loading:false
                     })
-                    this.handleNavigation('location')
-                }).catch(err=>this.setState({errorMsg:err}))
-
+                    this.props.navigation.navigate('location',{username})
+                }).catch(err=>this.setState({errorMsg:err,loading:false}))
+                
             }else{
-                this.setState({errorMsg:'Passwords Not Matched'})
+                this.setState({errorMsg:'Passwords Not Matched',loading:false})
             }  
         }
-    }
-
-    handleNavigation=(link)=>{
-        this.props.navigation.navigate(link)
     }
 
     render() {
@@ -77,6 +79,8 @@ class SignUp extends Component {
                     <Image source={require("../assets/img/layoutDesign.png")} style={styles.layout}/>
                     <Image source={require("../assets/img/logoTitle.png")} style={styles.logo}/>
                 </View>
+
+                <Image source={require("../assets/img/signUp.png")} style={styles.background}/>
 
                 <View style={styles.inputBlock}>
                     <View style={styles.emailBlock}>
@@ -117,7 +121,11 @@ class SignUp extends Component {
                     
 
                     <View style={styles.loginBtn}>
-                        <CustomButton btnText="Sign Up" handleBtnClick={this.handleBtnClick}/>
+                        {
+                            this.state.loading ? <Spinner size="large"/> 
+                            : <CustomButton btnText="Sign Up" handleBtnClick={this.handleBtnClick}/>
+                        }
+                       
                     </View>
                     
                 </View>
@@ -136,9 +144,18 @@ const styles=StyleSheet.create({
 
     headerBlock:{
         width:'100%',
-        height:140,
+        height:180,
         alignItems:'center',
         justifyContent:'center',
+    },
+
+    background:{
+        position:'absolute',
+        width:'60%',
+        height:'50%',
+        marginTop:'70%',
+        marginLeft:'40%',
+        opacity:0.5
     },
 
     layout:{
