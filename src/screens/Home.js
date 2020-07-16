@@ -188,11 +188,5 @@ const mapStateToProps=({auth:{user}})=>{
     }
 }
 
-const mapDispatchToProps=dispatch=>{
-    return{
-        storeData:data=>dispatch(storeData(data))
-    }
-}
-
 
 export default connect(mapStateToProps)(Home)

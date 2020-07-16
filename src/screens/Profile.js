@@ -2,14 +2,17 @@ import React, { Component } from 'react'
 import { Text, StyleSheet, View ,Dimensions,Image,FlatList ,TouchableOpacity} from 'react-native'
 
 import {connect} from 'react-redux'
+import {setCurrentAuth} from '../redux/Actions/SetAuth'
 
 import {fbase,database} from '../config/config'
+
+import InputField from '../components/InputField'
 
 class Profile extends Component {
     state={
         links:[
             {title:"My Account",img:require('../assets/img/account.png'),id:'1'},
-            {title:"Settings",img:require('../assets/img/settings.png'),id:'2'},
+            {title:"Update Info",img:require('../assets/img/settings.png'),id:'2'},
             {title:"Log out",img:require('../assets/img/logout.png'),id:'3'},
         ],
 
@@ -17,25 +20,71 @@ class Profile extends Component {
         settCart:false,
         logCart:false,
         profileData:{
-            location:{area:"",city:""},
+            location:{area:"no 00 ,Your Address",city:"Your country"},
             uid:"",
-            username:"Kamal"
+            username:"User"
         },
+
+        username:'',
+        area:'',
+        city:''
+        
     }
 
 
     componentDidMount(){
-        // database.ref()
-        const uid=fbase.auth().currentUser.uid
-        var data
-        database.ref('Users').child(uid).on('value',function(snapshot){
-            const exist=(snapshot.val()!==null)
-            if(exist) data=snapshot.val()
-        })
-        
-        this.setState({
-            profileData:data
-        })
+        // const uid=fbase.auth().currentUser.uid
+        // var data
+        // database.ref('Users').child(uid).on('value',function(snapshot){
+        //     const exist=(snapshot.val()!==null)
+        //     if(exist) data=snapshot.val()
+        // })
+
+        // if(data){
+        //     this.setState({
+        //         profileData:data
+        //     })
+        // }
+    }
+
+    onTextChange=(e,placeholder)=>{
+        switch(placeholder){
+            case "username":
+                this.setState({
+                    username:e
+                })
+                break
+
+            case "area":
+                this.setState({
+                    area:e
+                })
+                break
+
+            case "city":
+                this.setState({
+                    city:e
+                })
+                break
+
+            default : return
+        }
+    
+    }
+
+    renderUpdatesField=(placeholder)=>{
+        return(
+            <View style={styles.updates}>
+                <InputField
+                    placeholder={placeholder}
+                    onTextChange={e=>this.onTextChange(e,placeholder)}
+                    textSecure={false}
+                />
+                <TouchableOpacity onPress={()=>console.warn(this.state)}>
+                    <Text style={{borderWidth:1,padding:4}}>Update</Text>
+                </TouchableOpacity>
+             </View>
+        )
     }
 
     renderHiddenCart=(item)=>{
@@ -44,16 +93,18 @@ class Profile extends Component {
                 if(this.state.accCart){
                     return(
                         <View style={styles.hiddenCart}>
-
+                            {this.renderUpdatesField("username")}
+                            {this.renderUpdatesField("area")}
+                            {this.renderUpdatesField("city")}           
                         </View>
                     )
                 }else{return null}
 
-            case "Settings":
+            case "Update Info":
                 if(this.state.settCart){
                     return(
                         <View style={styles.hiddenCart}>
-
+                              
                         </View>
                     )
                 }else{return null}
@@ -68,7 +119,7 @@ class Profile extends Component {
                 this.setState({accCart:!this.state.accCart,settCart:false})
                 break;
         
-            case "Settings":
+            case "Update Info":
                 this.setState({settCart:!this.state.settCart,accCart:false})
                 break;
 
@@ -255,9 +306,23 @@ const styles = StyleSheet.create({
         backgroundColor:'white',
         elevation:3
     },
+
+    updates:{
+        width:'80%',
+        marginLeft:'10%',
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center',
+        marginTop:'5%'
+    },
     
 })
 
+const mapDispatchToProps=dispatch=>{
+    return{
+        setCurrentAuth:user=>dispatch(setCurrentAuth(user))
+    }
+}
 
 
-export default Profile
+export default connect(null,mapDispatchToProps)(Profile)
