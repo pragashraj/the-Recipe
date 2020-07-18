@@ -12,23 +12,17 @@ class Profile extends Component {
     state={
         links:[
             {title:"My Account",img:require('../assets/img/account.png'),id:'1'},
-            {title:"Update Info",img:require('../assets/img/settings.png'),id:'2'},
+            {title:"Card Info",img:require('../assets/img/settings.png'),id:'2'},
             {title:"Log out",img:require('../assets/img/logout.png'),id:'3'},
         ],
-
         accCart:false,
-        settCart:false,
-        logCart:false,
-        profileData:{
-            location:{area:"no 00 ,Your Address",city:"Your country"},
-            uid:"",
-            username:"User"
-        },
-
+        cardInfo:false,
         username:'',
         area:'',
-        city:''
-        
+        city:'',
+        Card_No:'',
+        CVV:'',
+        Exp_Date:'' 
     }
 
 
@@ -42,48 +36,54 @@ class Profile extends Component {
 
         if(data){
             this.setState({
-                profileData:data
+                username:data.username,
+                area:data.location.area,
+                city:data.location.city
             })
         }
-        // console.warn(data)
     }
 
     onTextChange=(e,placeholder)=>{
-        switch(placeholder){
-            case "username":
-                this.setState({
-                    username:e
-                })
-                break
-
-            case "area":
-                this.setState({
-                    area:e
-                })
-                break
-
-            case "city":
-                this.setState({
-                    city:e
-                })
-                break
-
-            default : return
-        }
-    
+        this.setState({
+            [placeholder]:e
+        })
     }
 
-    renderUpdatesField=(placeholder)=>{
+    handleUpdatePress=(placeholder)=>{
+        const uid=fbase.auth().currentUser.uid
+        if(placeholder === "username" || placeholder === "area" || placeholder ==="city"){
+            const {username,area,city}=this.state
+            const profileData={username,uid,location:{area,city}}
+            database.ref(`Users/${uid}`).update(profileData).then(()=>{
+                console.warn("updated")
+            }) 
+        }else{
+            const {Card_No,CVV,Exp_Date}=this.state
+            const cardData={Card_No,CVV,Exp_Date}
+            database.ref(`UserPayment/${uid}/cardInfo`).update(cardData).then(()=>{
+                console.warn("updated")
+            })
+        }
+       
+    }
+
+    renderUpdatesField=(placeholder,defaultValue)=>{
         return(
             <View style={styles.updates}>
                 <InputField
                     placeholder={placeholder}
                     onTextChange={e=>this.onTextChange(e,placeholder)}
                     textSecure={false}
+                    defaultValue={defaultValue}
                 />
-                <TouchableOpacity onPress={()=>console.warn(this.state)}>
-                    <Text style={{borderWidth:1,padding:4}}>Update</Text>
-                </TouchableOpacity>
+                {
+                    placeholder === "username" || placeholder === "area" || placeholder ==="city" ?
+                    <TouchableOpacity onPress={()=>this.handleUpdatePress(placeholder)}>
+                        <Text style={{borderWidth:0.8,padding:4}}>Update</Text>
+                    </TouchableOpacity>
+                    :null
+                }
+                
              </View>
         )
     }
@@ -94,18 +94,23 @@ class Profile extends Component {
                 if(this.state.accCart){
                     return(
                         <View style={styles.hiddenCart}>
-                            {this.renderUpdatesField("username")}
-                            {this.renderUpdatesField("area")}
-                            {this.renderUpdatesField("city")}           
+                            {this.renderUpdatesField("username",this.state.username)}
+                            {this.renderUpdatesField("area",this.state.area)}
+                            {this.renderUpdatesField("city",this.state.city)}           
                         </View>
                     )
                 }else{return null}
 
-            case "Update Info":
-                if(this.state.settCart){
+            case "Card Info":
+                if(this.state.cardInfo){
                     return(
                         <View style={styles.hiddenCart}>
-                              
+                            {this.renderUpdatesField("Card_No",this.state.Card_No)}
+                            {this.renderUpdatesField("CVV",this.state.CVV)}
+                            {this.renderUpdatesField("Exp_Date",this.state.Exp_Date)}
+                            <TouchableOpacity onPress={this.handleUpdatePress}>
+                                <Text style={{borderWidth:0.8,padding:4,alignSelf:'center',marginTop:'4%'}}>Update</Text>
+                            </TouchableOpacity>
                         </View>
                     )
                 }else{return null}
@@ -117,11 +122,11 @@ class Profile extends Component {
     setAction=(item)=>{
         switch(item){
             case "My Account":
-                this.setState({accCart:!this.state.accCart,settCart:false})
+                this.setState({accCart:!this.state.accCart,cardInfo:false})
                 break;
         
-            case "Update Info":
-                this.setState({settCart:!this.state.settCart,accCart:false})
+            case "Card Info":
+                this.setState({cardInfo:!this.state.cardInfo,accCart:false})
                 break;
 
             case "Log out":
@@ -173,13 +178,13 @@ class Profile extends Component {
 
                     <View style={styles.headerBlock}>
                         <View style={{...styles.infoBlock}}>
-                            <Text style={styles.name}>{this.state.profileData.username.toUpperCase()}</Text>
-                            <Text style={styles.address}>{this.state.profileData.location.area}</Text>
+                            <Text style={styles.name}>{this.state.username.toUpperCase()}</Text>
+                            <Text style={styles.address}>{this.state.area}</Text>
                         </View>
 
                         <View style={{...styles.imgBlock,...styles.center}}>
                             <View style={{...styles.circularView,...styles.center}}>
-                                <Text style={styles.nameTag}>{this.state.profileData.username.slice(0,1).toUpperCase()}</Text>
+                                <Text style={styles.nameTag}>{this.state.username.slice(0,1).toUpperCase()}</Text>
                             </View>
                         </View>
                     </View>
@@ -195,6 +200,7 @@ class Profile extends Component {
 }
 
 var screenHight=Dimensions.get('screen').height
+
 const styles = StyleSheet.create({
 
     container:{
@@ -303,7 +309,7 @@ const styles = StyleSheet.create({
 
     hiddenCart:{
         width:'100%',
-        height:250,
+        height:350,
         backgroundColor:'white',
         elevation:3
     },
@@ -319,6 +325,12 @@ const styles = StyleSheet.create({
     
 })
 
+const mapStateToProps=({auth:{user}})=>{
+    return{
+       user,
+    }
+}
+
 const mapDispatchToProps=dispatch=>{
     return{
         setCurrentAuth:user=>dispatch(setCurrentAuth(user))
@@ -326,4 +338,4 @@ const mapDispatchToProps=dispatch=>{
 }
 
 
-export default connect(null,mapDispatchToProps)(Profile)
+export default connect(mapStateToProps,mapDispatchToProps)(Profile)

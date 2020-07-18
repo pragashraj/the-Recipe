@@ -4,27 +4,21 @@ import { StyleSheet, Text, View ,Image, Dimensions,FlatList ,TouchableOpacity} f
 import CustomButton from '../components/CustomButton'
 
 import {connect} from 'react-redux'
+import {removeAnItem,removeAll} from '../redux/Actions/StoreData'
 
-const Basket_Payment = ({data}) => {
-    const basketItems=[
-        {id:'1',title:'pizza',prize:750},
-        {id:'2',title:'Hamburger',prize:450},
-        {id:'3',title:'Soup',prize:200},
-        {id:'4',title:'Cake',prize:200},
-        {id:'5',title:'Italian',prize:200},
-    ]
+const Basket_Payment = ({data,removeAnItem,removeAll}) => {
 
-    const [basketItem,setBasketItems]=useState([])
+    const [basketItems,setBasketItems]=useState([])
 
     useEffect(()=>{
         setBasketItems(data)
         // console.warn(data)
-    },[])
+    },data)
 
     const renderFlatList=()=>{
         return(
             <FlatList
-                data={basketItem}
+                data={basketItems}
                 keyExtractor={item=>item.id}
                 renderItem={
                     ({item})=>renderFlatListItem(item)
@@ -44,7 +38,7 @@ const Basket_Payment = ({data}) => {
                     <Text>${item.prize}</Text>
                 </View>
 
-                <TouchableOpacity style={styles.cancelBlock} onPress={handleCanceling}>
+                <TouchableOpacity style={styles.cancelBlock} onPress={()=>handleCanceling(item.id)}>
                     <View >
                         <Image source={require('../assets/img/clear.png')} />
                     </View>
@@ -61,12 +55,13 @@ const Basket_Payment = ({data}) => {
         return total
     }
 
-    const handleCanceling=()=>{
-
+    const handleCanceling=(id)=>{
+        removeAnItem(id)
     }
 
-    const handleBtnClick=()=>{
-        
+    const handlePlaceOrder=()=>{
+        //add to firebase
+        removeAll()
     }
     
 
@@ -77,7 +72,12 @@ const Basket_Payment = ({data}) => {
             <Text style={styles.heading}>Delivery & Payment</Text>
 
             <View style={styles.basketItems}>
-                {renderFlatList()}
+                {
+                    basketItems.length === 0 ? <View style={{...styles.card,justifyContent:'center',alignItems:'center'}}>
+                        <Text>No Items In basket</Text>
+                    </View> : 
+                    renderFlatList()
+                }
             </View>
 
             <View style={styles.paymentBlock}>
@@ -90,7 +90,7 @@ const Basket_Payment = ({data}) => {
             </View>
 
             <View style={styles.payBtn}>
-                <CustomButton btnText="Place Order" handleBtnClick={handleBtnClick}/>
+                <CustomButton btnText="Place Order" handleBtnClick={handlePlaceOrder}/>
             </View>
 
             
@@ -216,4 +216,11 @@ const mapStateToProps=({data:{data}})=>{
     }
 }
 
-export default connect(mapStateToProps)(Basket_Payment)
+const mapDispatchToProps=dispatch=>{
+    return{
+        removeAnItem:item=>dispatch(removeAnItem(item)),
+        removeAll:()=>dispatch(removeAll())
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Basket_Payment)

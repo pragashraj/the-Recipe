@@ -8,6 +8,17 @@ const dataReducer=(state=INITIAL_STATE,action)=>{
             ...state,
             data:[...state.data,action.payload]
         }
+
+        case "REMOVE_ITEM":return{
+            ...state,
+            data:state.data.filter(item=>item.id!==action.payload)
+        }
+
+        case "REMOVE_ALL":return{
+            ...state,
+            data:[]
+        }
+
         default : return state
     }
 }
