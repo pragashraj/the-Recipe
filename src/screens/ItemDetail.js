@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View,Image ,Dimensions,TouchableOpacity} from 'react-native'
+import { Text, StyleSheet, View,Image ,Dimensions,TouchableOpacity,ToastAndroid} from 'react-native'
 
 import RecipeInfoCard from '../components/RecipeInfoCard'
 import CustomButton from '../components/CustomButton'
+
+import {connect} from 'react-redux'
+import {storeData} from '../redux/Actions/StoreData'
 
 class ItemDetail extends Component {
     state={
@@ -28,7 +31,16 @@ class ItemDetail extends Component {
     }
 
     handleAddToBasket=()=>{
+        const label=this.props.route.params.item.label
+        const quantity=this.state.quantity
 
+        if(quantity>0){
+            const id=Math.floor(Math.random()*100).toString()
+            const prize=450
+            const basketItem={id,label,quantity,prize}
+            this.props.storeData(basketItem)
+            ToastAndroid.show("Added to Basket", ToastAndroid.SHORT)
+        }   
     }
 
     render() {
@@ -199,5 +211,8 @@ const styles = StyleSheet.create({
     }
 })
 
+const mapDispatchToProps=dispatch=>({
+    storeData:basketItem=>dispatch(storeData(basketItem))
+})
 
-export default ItemDetail
+export default connect(null,mapDispatchToProps)(ItemDetail)

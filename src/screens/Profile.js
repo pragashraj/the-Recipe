@@ -33,18 +33,19 @@ class Profile extends Component {
 
 
     componentDidMount(){
-        // const uid=fbase.auth().currentUser.uid
-        // var data
-        // database.ref('Users').child(uid).on('value',function(snapshot){
-        //     const exist=(snapshot.val()!==null)
-        //     if(exist) data=snapshot.val()
-        // })
+        const uid=fbase.auth().currentUser.uid
+        var data
+        database.ref('Users').child(uid).on('value',function(snapshot){
+            const exist=(snapshot.val()!==null)
+            if(exist) data=snapshot.val()
+        })
 
-        // if(data){
-        //     this.setState({
-        //         profileData:data
-        //     })
-        // }
+        if(data){
+            this.setState({
+                profileData:data
+            })
+        }
+        // console.warn(data)
     }
 
     onTextChange=(e,placeholder)=>{

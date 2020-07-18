@@ -1,9 +1,11 @@
-import React from 'react'
+import React ,{useEffect,useState}from 'react'
 import { StyleSheet, Text, View ,Image, Dimensions,FlatList ,TouchableOpacity} from 'react-native'
 
 import CustomButton from '../components/CustomButton'
 
-const Basket_Payment = () => {
+import {connect} from 'react-redux'
+
+const Basket_Payment = ({data}) => {
     const basketItems=[
         {id:'1',title:'pizza',prize:750},
         {id:'2',title:'Hamburger',prize:450},
@@ -12,10 +14,17 @@ const Basket_Payment = () => {
         {id:'5',title:'Italian',prize:200},
     ]
 
+    const [basketItem,setBasketItems]=useState([])
+
+    useEffect(()=>{
+        setBasketItems(data)
+        // console.warn(data)
+    },[])
+
     const renderFlatList=()=>{
         return(
             <FlatList
-                data={basketItems}
+                data={basketItem}
                 keyExtractor={item=>item.id}
                 renderItem={
                     ({item})=>renderFlatListItem(item)
@@ -28,7 +37,7 @@ const Basket_Payment = () => {
         return(
             <View style={styles.card}>
                 <View style={styles.titleBlock}>
-                    <Text>{item.title}</Text>
+                    <Text>{item.label}</Text>
                 </View>
 
                 <View style={styles.priceBlock}>
@@ -201,5 +210,10 @@ const styles = StyleSheet.create({
 })
 
 
+const mapStateToProps=({data:{data}})=>{
+    return{
+        data
+    }
+}
 
-export default Basket_Payment
+export default connect(mapStateToProps)(Basket_Payment)
