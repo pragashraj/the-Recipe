@@ -1,5 +1,5 @@
 import React ,{useEffect,useState}from 'react'
-import { StyleSheet, Text, View ,Image, Dimensions,FlatList ,TouchableOpacity} from 'react-native'
+import { StyleSheet, Text, View ,Image, Dimensions,FlatList ,TouchableOpacity,ToastAndroid} from 'react-native'
 
 import CustomButton from '../components/CustomButton'
 
@@ -35,6 +35,10 @@ const Basket_Payment = ({data,removeAnItem,removeAll}) => {
                     <Text>{item.label}</Text>
                 </View>
 
+                <View style={styles.quantityBlock}>
+                    <Text>${item.quantity}</Text>
+                </View>
+
                 <View style={styles.priceBlock}>
                     <Text>${item.prize}</Text>
                 </View>
@@ -51,19 +55,34 @@ const Basket_Payment = ({data,removeAnItem,removeAll}) => {
     const calculateTotal=()=>{
         var total=0
         basketItems.map(item=>{
-            total+=item.prize
+            total+=item.prize*item.quantity
         })
         return total
     }
 
     const handleCanceling=(id)=>{
         removeAnItem(id)
+        setBasketItems(basketItems.filter(item=>item.id!==id))
     }
 
     const handlePlaceOrder=()=>{
         const uid=fbase.auth().currentUser.uid
-        //add to firebase
-        removeAll()
+        const date=new Date()
+        var data
+        database.ref(`UserPayment/${uid}/cardInfo`).once('value').then(
+            function(snapshot){
+                const exist=(snapshot.val()!==null)
+                if(exist) data=snapshot.val()
+                if(data.Card_No && basketItems.length>0){
+                    database.ref(`Orders/${uid}/${date}`).set(basketItems).then(()=>{
+                        ToastAndroid.show('Your Order Send',ToastAndroid.SHORT)
+                        removeAll()
+                    })
+                }else{
+                    ToastAndroid.show('Please Add Your payment Card details first!!',ToastAndroid.SHORT) 
+                }
+        }).catch(err=>console.warn(err))
+
     }
     
 
@@ -152,7 +171,14 @@ const styles = StyleSheet.create({
     },
 
     titleBlock:{
-        width:'50%',
+        width:'30%',
+        height:'100%',
+        justifyContent:'center',
+        alignItems:'center',
+    },
+
+    quantityBlock:{
+        width:'20%',
         height:'100%',
         justifyContent:'center',
         alignItems:'center',
