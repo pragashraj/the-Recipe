@@ -30,44 +30,26 @@ class Location extends Component {
 
     componentDidMount(){
         this.requestPermissions()
-        // const API_KEY="08b99a7e0e12220737573be14114740b";
-        // const API_ID="b32179fc"
-        // const url='https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=Museum%20of%20Contemporary%20Art%20Australia&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=08b99a7e0e12220737573be14114740b'
-        // axios.get(url).then(res=>{
-        //      console.warn(res)
-        // })
     }
 
     onTextChange=(e,placeholder)=>{
-        switch(placeholder){
-            case "Enter City":
-                this.setState({
-                    city:e
-                })
-                break
-
-            case "Enter Address":
-                this.setState({
-                    address:e
-                })
-                break
-
-            default : return
-        }
+        this.setState({
+            [placeholder]:e
+        })
     }
 
     handleBtnClick=()=>{
-        // const {city,area}=this.state
-        // const uid=this.props.user.user.uid
-        // const username=this.props.route.params.username
+        const {city,address}=this.state
+        const uid=this.props.user.user.uid
+        const username=this.props.route.params.username
 
-        // if(city.length>0 && area.length>0){
-        //     database.ref(`Users/${uid}`).set({uid,username,location:{city,area}}).then(()=>{
-        //         this.props.navigation.navigate('mainFlow')
-        //     })         
-        // }else{
-        //     console.warn("invalid")
-        // }
+        if(city.length>0 && address.length>0){
+            database.ref(`Users/${uid}`).set({uid,username,location:{city,address}}).then(()=>{
+                this.props.navigation.navigate('mainFlow')
+            })         
+        }else{
+            console.warn("invalid")
+        }
         this.props.navigation.navigate('mainFlow')
     }
 
@@ -104,7 +86,7 @@ class Location extends Component {
             <View style={styles.inputForm}>
                 <View style={styles.input}>
                     <InputField 
-                        placeholder="Enter City" 
+                        placeholder="city" 
                         onTextChange={this.onTextChange} 
                         defaultValue={this.state.city}
                         textSecure={false}
@@ -113,7 +95,7 @@ class Location extends Component {
 
                 <View style={styles.input}>
                     <InputField 
-                        placeholder="Enter Address" 
+                        placeholder="address" 
                         onTextChange={this.onTextChange} 
                         defaultValue={this.state.address}
                         textSecure={false}

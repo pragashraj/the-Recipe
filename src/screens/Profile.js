@@ -138,7 +138,8 @@ class Profile extends Component {
     }
 
     logOut=()=>{
-        // this.props.navigation.navigate('login')
+        this.props.setCurrentAuth(null)
+        this.props.navigation.navigate('authFlow')
     }
 
     renderList=()=>{

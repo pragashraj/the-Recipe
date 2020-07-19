@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View ,StyleSheet ,Image , ScrollView ,TouchableOpacity } from 'react-native'
+import { Text, View ,StyleSheet ,Image , ScrollView} from 'react-native'
 
 import InputField from '../components/InputField'
 import CustomButton from '../components/CustomButton'
@@ -13,53 +13,34 @@ import Spinner from '../components/Spinner'
 class SignUp extends Component {
 
     state={
-        email:'',
-        password:'',
-        confirmPassword:'',
+        E_mail:'',
+        Password:'',
+        Confirm_Password:'',
         errorMsg:'',
         loading:false
     }
 
     onTextChange=(e,placeholder)=>{
-        switch(placeholder){
-            case "E-mail":
-                this.setState({
-                    email:e,
-                })
-                break
-
-            case "Password":
-                this.setState({
-                    password:e
-                })
-                break
-
-            case "Confirm-Password":
-                this.setState({
-                    confirmPassword:e
-                })
-                break
-
-            default : return
-        }
-
+        this.setState({
+            [placeholder]:e
+        })
     }
 
     handleBtnClick=()=>{
-        const {email,password,confirmPassword}=this.state
-        var username=email.split('@')[0]
+        const {E_mail,Password,Confirm_Password}=this.state
+        var username=E_mail.split('@')[0]
 
         this.setState({loading:true})
 
-        if(email.length >0 && password.length>0 && confirmPassword.length >0){
+        if(E_mail.length >0 && Password.length>0 && Confirm_Password.length >0){
 
-            if(password===confirmPassword){
-                auth.createUserWithEmailAndPassword(email,password).then(user=>{
+            if(Password===Confirm_Password){
+                auth.createUserWithEmailAndPassword(E_mail,Password).then(user=>{
                     this.props.setCurrentAuth(user)
                     this.setState({
-                        email:'',
-                        password:'',
-                        confirmPassword:'',
+                        E_mail:'',
+                        Password:'',
+                        Confirm_Password:'',
                         errorMsg:'',
                         loading:false
                     })
@@ -85,9 +66,9 @@ class SignUp extends Component {
                 <View style={styles.inputBlock}>
                     <View style={styles.emailBlock}>
                         <InputField 
-                            placeholder="E-mail" 
+                            placeholder="E_mail" 
                             onTextChange={this.onTextChange} 
-                            defaultValue={this.state.email}
+                            defaultValue={this.state.E_mail}
                             textSecure={false}
                         />
                     </View>
@@ -96,16 +77,16 @@ class SignUp extends Component {
                         <InputField 
                             placeholder="Password" 
                             onTextChange={this.onTextChange} 
-                            defaultValue={this.state.password}
+                            defaultValue={this.state.Password}
                             textSecure={true}
                         />
                     </View>
 
                     <View style={styles.passwordBlock}>
                         <InputField 
-                            placeholder="Confirm-Password" 
+                            placeholder="Confirm_Password" 
                             onTextChange={this.onTextChange} 
-                            defaultValue={this.state.confirmPassword}
+                            defaultValue={this.state.Confirm_Password}
                             textSecure={true}
                         />
                     </View>

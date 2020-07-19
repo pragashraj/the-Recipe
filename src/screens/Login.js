@@ -12,46 +12,33 @@ import {auth} from '../config/config'
 
 class Login extends Component {
     state={
-        email:'',
-        password:'',
+        E_mail:'',
+        Password:'',
         errorMsg:''
     }
 
     componentDidMount(){
         const user=this.props.user
-        if(user.user){
+        if(user){
             this.handleNavigation('mainFlow')
         }
-        console.warn(user)
     }
 
     onTextChange=(e,placeholder)=>{
-        switch(placeholder){
-            case "E-mail":
-                this.setState({
-                    email:e
-                })
-                break
-
-            case "Password":
-                this.setState({
-                    password:e
-                })
-                break
-
-            default : return
-        }
+        this.setState({
+            [placeholder]:e
+        })
     }
 
     handleBtnClick=()=>{
-        const {email,password}=this.state
-        if(email.length >0 && password.length>0){
+        const {E_mail,Password}=this.state
+        if(E_mail.length >0 && Password.length>0){
 
-            auth.signInWithEmailAndPassword(email,password).then(user=>{
+            auth.signInWithEmailAndPassword(E_mail,Password).then(user=>{
                 this.props.setCurrentAuth(user)
                 this.setState({
-                    email:'',
-                    password:'',
+                    E_mail:'',
+                    Password:'',
                     errorMsg:''
                 })
             this.handleNavigation('mainFlow')
@@ -76,9 +63,9 @@ class Login extends Component {
                 <View style={styles.inputBlock}>
                     <View style={styles.emailBlock}>
                         <InputField 
-                            placeholder="E-mail" 
+                            placeholder="E_mail" 
                             onTextChange={this.onTextChange} 
-                            defaultValue={this.state.email}
+                            defaultValue={this.state.E_mail}
                             textSecure={false}
                         />
                     </View>
@@ -87,7 +74,7 @@ class Login extends Component {
                         <InputField 
                             placeholder="Password" 
                             onTextChange={this.onTextChange} 
-                            defaultValue={this.state.password}
+                            defaultValue={this.state.Password}
                             textSecure={true}
                         />
                     </View>

@@ -6,13 +6,14 @@ import CustomButton from '../components/CustomButton'
 import {connect} from 'react-redux'
 import {removeAnItem,removeAll} from '../redux/Actions/StoreData'
 
+import {fbase,database} from '../config/config'
+
 const Basket_Payment = ({data,removeAnItem,removeAll}) => {
 
     const [basketItems,setBasketItems]=useState([])
 
     useEffect(()=>{
         setBasketItems(data)
-        // console.warn(data)
     },data)
 
     const renderFlatList=()=>{
@@ -60,6 +61,7 @@ const Basket_Payment = ({data,removeAnItem,removeAll}) => {
     }
 
     const handlePlaceOrder=()=>{
+        const uid=fbase.auth().currentUser.uid
         //add to firebase
         removeAll()
     }

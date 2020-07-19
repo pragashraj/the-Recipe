@@ -4,9 +4,6 @@ import { Text, StyleSheet, View ,Image , Dimensions , TouchableOpacity} from 're
 import {coffee,foodAPI} from '../api/Api'
 import FlatListItem from '../components/FlatListItem'
 
-import {connect} from 'react-redux'
-import {storeData} from '../redux/Actions/StoreData'
-
 import CustomSearch from '../components/CustomSearch'
 import ShortList from '../components/ShortList'
 
@@ -182,11 +179,5 @@ const styles = StyleSheet.create({
 })
 
 
-const mapStateToProps=({auth:{user}})=>{
-    return{
-       user
-    }
-}
 
-
-export default connect(mapStateToProps)(Home)
+export default Home
