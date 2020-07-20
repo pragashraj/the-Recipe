@@ -19,7 +19,7 @@ const Basket_Payment = ({data,removeAnItem,removeAll}) => {
     const renderFlatList=()=>{
         return(
             <FlatList
-                data={basketItems}
+                data={data}
                 keyExtractor={item=>item.id}
                 renderItem={
                     ({item})=>renderFlatListItem(item)
@@ -90,7 +90,7 @@ const Basket_Payment = ({data,removeAnItem,removeAll}) => {
         <View style={styles.container}>
             <Image source={require('../assets/img/theme.png')} style={styles.themeImg}/>
             <Image source={require('../assets/img/billingCard.jpg')} style={styles.cardImg}/>
-            <Text style={styles.heading}>Delivery & Payment</Text>
+            <Text style={styles.heading}>Basket & Payment</Text>
 
             <View style={styles.basketItems}>
                 {
@@ -103,7 +103,7 @@ const Basket_Payment = ({data,removeAnItem,removeAll}) => {
 
             <View style={styles.paymentBlock}>
                 <View style={styles.paymentDetail}>
-                    <Image source={require('../assets/img/invoice.png')} style={{width:'100%',height:'90%'}}/>
+                    <Image source={require('../assets/img/invoice.png')} style={{width:'90%',height:'90%'}}/>
                 </View>
                 <View style={styles.total}>
                     <Text style={styles.amountText}>Order Total : ${calculateTotal()}</Text>

@@ -5,7 +5,7 @@ import RecipeInfoCard from '../components/RecipeInfoCard'
 import CustomButton from '../components/CustomButton'
 
 import {connect} from 'react-redux'
-import {storeData} from '../redux/Actions/StoreData'
+import {storeData,increaseQuantity} from '../redux/Actions/StoreData'
 
 class ItemDetail extends Component {
     state={
@@ -35,11 +35,28 @@ class ItemDetail extends Component {
         const quantity=this.state.quantity
 
         if(quantity>0){
-            const id=Math.floor(Math.random()*100).toString()
-            const prize=450
-            const basketItem={id,label,quantity,prize}
-            this.props.storeData(basketItem)
-            ToastAndroid.show("Added to Basket", ToastAndroid.SHORT)
+            const basketData=this.props.data
+            var exist
+            var existingitem
+            basketData.map(item=>{
+                if(item.label===label){
+                    exist=true
+                    existingitem=item
+                }
+            })
+            if(!exist){
+                const id=Math.floor(Math.random()*100).toString()
+                const prize=450
+                const basketItem={id,label,quantity,prize}
+                this.props.storeData(basketItem)
+                ToastAndroid.show("Added to Basket", ToastAndroid.SHORT)
+                
+            }else{
+                const item={id:existingitem.id,quantity}
+                this.props.increaseQuantity(item)
+                ToastAndroid.show("Item was already in basket this action will increase qunatity", ToastAndroid.LONG)
+            }
+           
         }   
     }
 
@@ -211,8 +228,18 @@ const styles = StyleSheet.create({
     }
 })
 
-const mapDispatchToProps=dispatch=>({
-    storeData:basketItem=>dispatch(storeData(basketItem))
-})
+const mapStateToProps=({data:{data}})=>{
+    return{
+        data
+    }
+}
 
-export default connect(null,mapDispatchToProps)(ItemDetail)
+
+const mapDispatchToProps=dispatch=>{
+    return{
+        storeData:basketItem=>dispatch(storeData(basketItem)),
+        increaseQuantity:item=>dispatch(increaseQuantity(item))
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(ItemDetail)

@@ -19,6 +19,15 @@ const dataReducer=(state=INITIAL_STATE,action)=>{
             data:[]
         }
 
+        case "INCREASE_ITEM": return{
+            ...state,
+            data:state.data.map(item=>
+                item.id===action.payload.id ? {...item,quantity:item.quantity+action.payload.quantity} : item
+            )
+        }
+                 
+         
+
         default : return state
     }
 }

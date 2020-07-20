@@ -11,3 +11,8 @@ export const removeAnItem=item=>({
 export const removeAll=()=>({
     type:"REMOVE_ALL"
 })
+
+export const increaseQuantity=item=>({
+    type:"INCREASE_ITEM",
+    payload:item
+})
