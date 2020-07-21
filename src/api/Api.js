@@ -22,3 +22,21 @@ export const foodAPI=(type)=>(
         baseURL:`https://api.edamam.com/search?q=${type}&app_id=${API_ID}&app_key=${API_KEY}`,
     })
 )
+
+
+export const restaurants=(type)=>(
+    axios.create({
+        baseURL:`https://developers.zomato.com/api/v2.1/search?entity_id=4&entity_type=city&q=chinese`,
+        headers:{
+            'user-key':'c5af407da9665db5abb87ed8103422cd'
+        }
+    })
+)
+
+export const restaurantCategories= axios.create({
+        baseURL:`https://developers.zomato.com/api/v2.1/categories`,
+        headers:{
+            'user-key':'c5af407da9665db5abb87ed8103422cd'
+        }
+    })
+

@@ -14,6 +14,7 @@ import ItemDetail from './src/screens/ItemDetail'
 import FoodList from './src/screens/FoodList'
 import Basket_Payment from './src/screens/Basket_Payment'
 import Profile from './src/screens/Profile'
+import RestaurantCategories from './src/screens/RestaurantCategories'
 
 import {createStackNavigator} from '@react-navigation/stack'
 import {NavigationContainer} from '@react-navigation/native'
@@ -116,6 +117,12 @@ const App = () => {
             <stack.Screen
               name="foodList"
               component={FoodList}
+              options={ {headerShown:false} }
+            />
+
+            <stack.Screen
+              name="restaurantCategories"
+              component={RestaurantCategories}
               options={ {headerShown:false} }
             />
            

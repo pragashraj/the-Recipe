@@ -51,6 +51,10 @@ class Home extends Component {
         this.props.navigation.navigate('foodList',{item,nav:this.props.navigation})
     }
 
+    handleTabOnRestaurantCategories=()=>{
+        this.props.navigation.navigate('restaurantCategories')
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -92,7 +96,7 @@ class Home extends Component {
                 
                 <View style={styles.restaurants}>
                     <View style={styles.restaurantsTextBlock}>
-                        <TouchableOpacity >
+                        <TouchableOpacity onPress={this.handleTabOnRestaurantCategories}>
                             <Text style={styles.restaurantsText}>Restaurants</Text>
                         </TouchableOpacity>
                     </View>
@@ -120,13 +124,13 @@ const styles = StyleSheet.create({
         height:screenHight/4.5
     },
 
-    ProfileImg:{
-        position:'absolute',
-        alignSelf:'flex-end',
-        marginTop:'2%',
-        marginRight:'5%',
-        opacity:0.5
-    },
+    // ProfileImg:{
+    //     position:'absolute',
+    //     alignSelf:'flex-end',
+    //     marginTop:'2%',
+    //     marginRight:'5%',
+    //     opacity:0.5
+    // },
 
     searchView:{
         position:'absolute',
