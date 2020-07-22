@@ -65,7 +65,7 @@ class Home extends Component {
                 </View>
 
                 <View style={styles.shortList}>
-                    <ShortList data={this.state.itemSortList} handleShortListTab={this.handleShortListTab}/>
+                    <ShortList data={this.state.itemSortList} handleShortListTab={this.handleShortListTab} indeX={0}/>
                 </View>
 
                 <View style={styles.todayList}>

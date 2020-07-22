@@ -1,14 +1,14 @@
 import React from 'react'
 import { StyleSheet, Text, View ,FlatList,TouchableOpacity} from 'react-native'
 
-const ShortList = ({data,handleShortListTab}) => {
+const ShortList = ({data,handleShortListTab,indeX}) => {
 
     const renderFlatListItem=(item,index)=>{
         return(
             <View style={styles.shortListItemView}>
-                <TouchableOpacity onPress={()=>handleShortListTab(item)}>
+                <TouchableOpacity onPress={()=>handleShortListTab(item,index)}>
                     <Text style={
-                        index === 0 ? {...styles.shortListItem, color:'green'} : {...styles.shortListItem}                         
+                        index === indeX ? {...styles.shortListItem, color:'red', fontWeight:'bold',borderBottomWidth:0.5} : {...styles.shortListItem}                         
                     }>{item}</Text>
                 </TouchableOpacity>
             </View>

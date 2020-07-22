@@ -1,34 +1,58 @@
 import React, { Component } from 'react'
 import { Text, StyleSheet, View,Image ,Dimensions,FlatList,TouchableOpacity} from 'react-native'
 
-import {restaurantCategories} from '../api/Api'
+import {restaurantCategories,restaurants} from '../api/Api'
+import ShortList from '../components/ShortList'
+import Spinner from '../components/Spinner'
 
 class RestaurantCategories extends Component {
     state={
-        categoriesData:[]
+        categoriesData:[],
+        shortList:[],
+        loading:true,
+        index:0
     }
 
-    componentDidMount(){
-        // restaurants('').get().then(res=>{
-        //     console.warn(res.data.restaurants.length)
-        // })
+    componentDidMount (){
+        this.fetchResData('Delivery')
+        this.fetchCategories()
+    }
 
-        restaurantCategories.get().then(res=>{
-            this.setState({
-                categoriesData:res.data.categories
+    fetchCategories=async()=>{
+        await restaurantCategories.get().then(res=>{
+            var data=res.data.categories
+            var shortList=[]
+            data.map(item=>{
+                shortList.push(item.categories.name)
             })
-            // console.warn(res.data.categories)
+            this.setState({
+                categoriesData:res.data.categories,
+                shortList
+            })
         })
-        
+    }
+
+    fetchResData=async(type)=>{
+        await restaurants(type).get().then(res=>{
+            var data=res.data.restaurants
+            var categoriesData=[]
+            data.map(item=>{
+                categoriesData.push(item.restaurant.name)
+            })
+            this.setState({
+                categoriesData:res.data.restaurants,
+                loading:false
+            })
+        })
     }
 
     renderFlatList=()=>{
         return(
             <FlatList
                 data={this.state.categoriesData}
-                keyExtractor={item=>item.categories.id}
+                keyExtractor={item=>item.restaurant.R.res_id}
                 renderItem={
-                    ({item})=>this.renderFlatListItem(item.categories)
+                    ({item})=>this.renderFlatListItem(item.restaurant)
                 }
             />
         )
@@ -36,17 +60,29 @@ class RestaurantCategories extends Component {
 
     renderFlatListItem=(item)=>{
         return(
-            <TouchableOpacity>
+            <TouchableOpacity onPress={this.handleTabOnCart}>
                 <View style={styles.ListCart}>
                     <View style={styles.ImgBlock}>
-                        <Image source={require('../assets/img/resCat.png')} style={styles.itemImg}/>
+                        <Image source={item.thumb ? {uri:item.thumb}:require('../assets/img/resCat.png')} style={styles.itemImg}/>
                     </View>
                     <View style={styles.itemInfo}>
-                        <Text style={{fontSize:23,color:'white'}}>{item.name}</Text>
+                        <Text style={{fontSize:20,color:'black'}}>{item.name}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
         )
+    }
+
+    handleShortListTab=(type,index)=>{
+        this.setState({
+            loading:true,
+            index
+        })
+        this.fetchResData(type)
+    }
+
+    handleTabOnCart=()=>{
+        
     }
 
 
@@ -59,8 +95,15 @@ class RestaurantCategories extends Component {
                     <Text style={{fontSize:25}}>Categories</Text>
                 </View>
 
+                <View style={styles.shortList}>
+                    <ShortList data={this.state.shortList} handleShortListTab={this.handleShortListTab} indeX={this.state.index}/>
+                </View>
+
                 <View style={styles.mainBlock}>
-                    {this.renderFlatList()}
+                    {
+                        this.state.loading ? <Spinner size="large"/> :
+                        this.renderFlatList()
+                    }
                 </View>
             </View>
         )
@@ -94,6 +137,14 @@ const styles = StyleSheet.create({
         alignItems:'center'
     },
 
+    shortList:{
+        width:'100%',
+        height:(screenHight/100)*5,
+        marginTop:'1%',
+        justifyContent:'center',
+        alignItems:'center'
+    },
+
     mainBlock:{
         width:'94%',
         marginLeft:'3%',
@@ -106,28 +157,28 @@ const styles = StyleSheet.create({
         height:50,
         marginTop:'5%',
         flexDirection:'row',
-        backgroundColor:'#5ada58',
-        elevation:5
+        backgroundColor:'white',
+        elevation:5,
     },
 
     ImgBlock:{
-        width:'30%',
+        width:'20%',
         height:'100%',
         justifyContent:'center',
         alignItems:'center',
     },
 
     itemInfo:{
-        width:'70%',
+        width:'80%',
         height:'100%',
         justifyContent:'center',
     },
 
-    // itemImg:{
-    //     width:'90%',
-    //     height:'90%',
-    //     borderRadius:10,
-    // },
+    itemImg:{
+        width:'80%',
+        height:'80%',
+        borderRadius:10,
+    },
 })
 
 

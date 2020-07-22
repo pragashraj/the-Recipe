@@ -26,7 +26,7 @@ export const foodAPI=(type)=>(
 
 export const restaurants=(type)=>(
     axios.create({
-        baseURL:`https://developers.zomato.com/api/v2.1/search?entity_id=4&entity_type=city&q=chinese`,
+        baseURL:`https://developers.zomato.com/api/v2.1/search?entity_id=4&entity_type=city&q=${type}`,
         headers:{
             'user-key':'c5af407da9665db5abb87ed8103422cd'
         }
