@@ -52,7 +52,7 @@ class Home extends Component {
     }
 
     handleTabOnRestaurantCategories=()=>{
-        this.props.navigation.navigate('restaurantCategories')
+        this.props.navigation.navigate('restaurantCategories',{nav:this.props.navigation})
     }
 
     render() {

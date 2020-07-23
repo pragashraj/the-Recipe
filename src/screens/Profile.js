@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View ,Dimensions,Image,FlatList ,TouchableOpacity} from 'react-native'
+import { Text, StyleSheet, View ,Dimensions,Image,FlatList ,TouchableOpacity,RefreshControl} from 'react-native'
 
 import {connect} from 'react-redux'
 import {setCurrentAuth} from '../redux/Actions/SetAuth'
@@ -22,11 +22,16 @@ class Profile extends Component {
         city:'',
         Card_No:'',
         CVV:'',
-        Exp_Date:'' 
+        Exp_Date:'' ,
+        refreshing: false
     }
 
 
     componentDidMount(){
+        this.fetchData()
+    }
+
+    fetchData=()=>{
         const uid=fbase.auth().currentUser.uid
         var data
         database.ref('Users').child(uid).on('value',function(snapshot){
@@ -38,9 +43,15 @@ class Profile extends Component {
             this.setState({
                 username:data.username,
                 area:data.location.area,
-                city:data.location.city
+                city:data.location.city,
+                refreshing: false
             })
         }
+    }
+
+    onRefresh=()=>{
+        this.setState({refreshing: true});
+        this.fetchData()
     }
 
     onTextChange=(e,placeholder)=>{
@@ -163,6 +174,12 @@ class Profile extends Component {
                              </View>   
                         )
                     }
+                }
+                refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.onRefresh}
+                    />
                 }
             />
         )

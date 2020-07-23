@@ -60,7 +60,7 @@ class RestaurantCategories extends Component {
 
     renderFlatListItem=(item)=>{
         return(
-            <TouchableOpacity onPress={this.handleTabOnCart}>
+            <TouchableOpacity onPress={()=>this.handleTabOnCart(item)}>
                 <View style={styles.ListCart}>
                     <View style={styles.ImgBlock}>
                         <Image source={item.thumb ? {uri:item.thumb}:require('../assets/img/resCat.png')} style={styles.itemImg}/>
@@ -81,8 +81,8 @@ class RestaurantCategories extends Component {
         this.fetchResData(type)
     }
 
-    handleTabOnCart=()=>{
-        
+    handleTabOnCart=(item)=>{
+        this.props.navigation.navigate('restaurant',{item})
     }
 
 
