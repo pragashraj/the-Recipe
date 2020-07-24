@@ -124,14 +124,6 @@ const styles = StyleSheet.create({
         height:screenHight/4.5
     },
 
-    // ProfileImg:{
-    //     position:'absolute',
-    //     alignSelf:'flex-end',
-    //     marginTop:'2%',
-    //     marginRight:'5%',
-    //     opacity:0.5
-    // },
-
     searchView:{
         position:'absolute',
         width:'60%',
