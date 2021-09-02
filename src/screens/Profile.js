@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View ,Dimensions,Image,FlatList ,TouchableOpacity,RefreshControl} from 'react-native'
+import { Text, StyleSheet, View, Dimensions, Image, FlatList, TouchableOpacity, RefreshControl} from 'react-native'
 
 import {connect} from 'react-redux'
 import {setCurrentAuth} from '../redux/Actions/SetAuth'
 
-import {fbase,database} from '../config/config'
+import {fbase, database} from '../config/config'
 
 import InputField from '../components/InputField'
 
@@ -31,20 +31,22 @@ class Profile extends Component {
         this.fetchData()
     }
 
-    fetchData=()=>{
-        const uid=fbase.auth().currentUser.uid
-        var data
-        database.ref('Users').child(uid).on('value',function(snapshot){
-            const exist=(snapshot.val()!==null)
-            if(exist) data=snapshot.val()
-        })
-
-        if(data){
-            this.setState({
-                username:data.username,
-                area:data.location.area,
-                city:data.location.city,
-                refreshing: false
+    fetchData = () => {
+        if (fbase.auth() && fbase.auth().currentUser) {
+            const uid = fbase.auth().currentUser.uid
+            database.ref('Users').child(uid).on('value',function(snapshot){
+                const exist = (snapshot.val()!==null)
+                if(exist) {
+                   const data = snapshot.val()
+                   if(data){
+                        this.setState({
+                            username:data.username,
+                            area:data.location.area,
+                            city:data.location.city,
+                            refreshing: false
+                        })
+                    }
+                }
             })
         }
     }

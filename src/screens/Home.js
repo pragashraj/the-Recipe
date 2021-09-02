@@ -23,19 +23,21 @@ class Home extends Component {
     }
 
     fetchData = async() => {
-        await coffee.get().then(res => {
+        try {
+            const coffeeRes = await coffee.get()
             this.setState({
-                todayData: res.data.hits,
+                todayData: coffeeRes.data.hits,
                 loadingMeals: false
             })
-        })
 
-        await foodAPI("pizza").get().then(res => {
+            const pizzaRes = await foodAPI("pizza").get()
             this.setState({
-                continentalData:res.data.hits,
-                loadingCountries:false
+                continentalData: pizzaRes.data.hits,
+                loadingCountries: false
             })
-        })
+        } catch(e) {
+            console.log(e)
+        }
     }
     
 
