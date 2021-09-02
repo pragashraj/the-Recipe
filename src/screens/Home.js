@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Text, StyleSheet, View ,Image , Dimensions , TouchableOpacity} from 'react-native'
+import { Text, StyleSheet, View, Image, Dimensions, TouchableOpacity} from 'react-native'
 
-import {coffee,foodAPI} from '../api/Api'
+import {coffee, foodAPI} from '../api/Api'
 import FlatListItem from '../components/FlatListItem'
 
 import CustomSearch from '../components/CustomSearch'
@@ -10,27 +10,27 @@ import ShortList from '../components/ShortList'
 import Spinner from '../components/Spinner'
 
 class Home extends Component {
-    state={
-        itemSortList:["All","Pizza","Chinese","Italian","Soup","Hamburger","SeaFood"],
-        todayData:'',
-        continentalData:null,
-        loadingMeals:true,
-        loadingCountries:true
+    state = {
+        itemSortList: ["All","Pizza","Chinese","Italian","Soup","Hamburger","SeaFood"],
+        todayData: '',
+        continentalData: null,
+        loadingMeals: true,
+        loadingCountries: true
     }
 
     componentDidMount(){
         this.fetchData()
     }
 
-    fetchData=async ()=>{
-        await coffee.get().then(res=>{
+    fetchData = async() => {
+        await coffee.get().then(res => {
             this.setState({
-                todayData:res.data.hits,
-                loadingMeals:false
+                todayData: res.data.hits,
+                loadingMeals: false
             })
         })
 
-        await foodAPI("pizza").get().then(res=>{
+        await foodAPI("pizza").get().then(res => {
             this.setState({
                 continentalData:res.data.hits,
                 loadingCountries:false
@@ -39,69 +39,69 @@ class Home extends Component {
     }
     
 
-    handleShortListTab=(item)=>{
-        this.props.navigation.navigate('foodList',{item,nav:this.props.navigation})
+    handleShortListTab = (item) => {
+        this.props.navigation.navigate('foodList',{item, nav: this.props.navigation})
     }
 
-    handleTabOnList=(item)=>{
-        this.props.navigation.navigate('itemDetail',{item})
+    handleTabOnList = (item) => {
+        this.props.navigation.navigate('itemDetail', {item})
     }
 
-    handleTabOnTitle=(item)=>{
-        this.props.navigation.navigate('foodList',{item,nav:this.props.navigation})
+    handleTabOnTitle = (item) => {
+        this.props.navigation.navigate('foodList', {item, nav: this.props.navigation})
     }
 
-    handleTabOnRestaurantCategories=()=>{
-        this.props.navigation.navigate('restaurantCategories',{nav:this.props.navigation})
+    handleTabOnRestaurantCategories = () => {
+        this.props.navigation.navigate('restaurantCategories', {nav: this.props.navigation})
     }
 
     render() {
         return (
-            <View style={styles.container}>
-                <Image source={require('../assets/img/theme.png')} style={styles.themeImg}/>
+            <View style = {styles.container}>
+                <Image source = {require('../assets/img/theme.png')} style = {styles.themeImg}/>
 
-                <View style={styles.searchView}>
-                    <CustomSearch nav={this.props.navigation}/>
+                <View style = {styles.searchView}>
+                    <CustomSearch nav = {this.props.navigation}/>
                 </View>
 
-                <View style={styles.shortList}>
-                    <ShortList data={this.state.itemSortList} handleShortListTab={this.handleShortListTab} indeX={0}/>
+                <View style = {styles.shortList}>
+                    <ShortList data = {this.state.itemSortList} handleShortListTab = {this.handleShortListTab} indeX = {0}/>
                 </View>
 
-                <View style={styles.todayList}>
+                <View style = {styles.todayList}>
                     {
-                        this.state.loadingMeals ? <Spinner size="large"/> :
-                   
+                        this.state.loadingMeals ? <Spinner size = "large"/> 
+                        :
                         <FlatListItem 
-                                data={this.state.todayData} 
-                                title="Today's best deals" 
-                                handleTabOnList={this.handleTabOnList}
-                                handleTabOnTitle={this.handleTabOnTitle}
+                                data = {this.state.todayData} 
+                                title = "Today's best deals" 
+                                handleTabOnList = {this.handleTabOnList}
+                                handleTabOnTitle = {this.handleTabOnTitle}
                         />
                     }
                 </View>
 
-                <View style={styles.continental}>
+                <View style = {styles.continental}>
                 {
-                    this.state.loadingCountries ? <Spinner size="large"/> :
-
+                    this.state.loadingCountries ? <Spinner size="large"/> 
+                    :
                     <FlatListItem 
-                        data={this.state.continentalData} 
-                        title="Country Specials" 
-                        handleTabOnList={this.handleTabOnList}
-                        handleTabOnTitle={this.handleTabOnTitle}
+                        data = {this.state.continentalData} 
+                        title = "Country Specials" 
+                        handleTabOnList = {this.handleTabOnList}
+                        handleTabOnTitle = {this.handleTabOnTitle}
                     />
                 }
                 </View>
                 
-                <View style={styles.restaurants}>
-                    <View style={styles.restaurantsTextBlock}>
-                        <TouchableOpacity onPress={this.handleTabOnRestaurantCategories}>
-                            <Text style={styles.restaurantsText}>Restaurants</Text>
+                <View style = {styles.restaurants}>
+                    <View style = {styles.restaurantsTextBlock}>
+                        <TouchableOpacity onPress = {this.handleTabOnRestaurantCategories}>
+                            <Text style = {styles.restaurantsText}>Restaurants</Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.restaurantsImgBlock}>
-                        <Image source={require('../assets/img/restaurant.png')}/>
+                    <View style = {styles.restaurantsImgBlock}>
+                        <Image source = {require('../assets/img/restaurant.png')}/>
                     </View>
                 </View>
             </View>
@@ -109,9 +109,9 @@ class Home extends Component {
     }
 }
 
-var screenHight=Dimensions.get('screen').height
-const styles = StyleSheet.create({
+var screenHight = Dimensions.get('screen').height
 
+const styles = StyleSheet.create({
     container:{
         width:'100%',
         height:'100%',
@@ -173,7 +173,5 @@ const styles = StyleSheet.create({
         alignSelf:'flex-start'
     },
 })
-
-
 
 export default Home

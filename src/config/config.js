@@ -1,6 +1,6 @@
 import firebase from 'firebase'
 
-const config={
+const config = {
     apiKey: "AIzaSyBbjg9FzUO-jOC4TzCSkmFjkYOdj4ILnlc",
     authDomain: "the-recipe-281912.firebaseapp.com",
     databaseURL: "https://the-recipe-281912.firebaseio.com",
@@ -13,7 +13,7 @@ const config={
 
 firebase.initializeApp(config)
 
-export const fbase=firebase
-export const database=firebase.database()
-export const auth=firebase.auth()
-export const storage=firebase.storage()
+export const fbase = firebase
+export const database = firebase.database()
+export const auth = firebase.auth()
+export const storage = firebase.storage()
